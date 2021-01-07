@@ -1,0 +1,59 @@
+﻿@model IEnumerable<FirmaMeblarska.Models.Adres>
+
+@{
+    ViewData["Title"] = "Adresy";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Adresy</h1>
+
+<p>
+    <a asp-action="AddOrEdit" class="btn btn-outline-success"><i class="far fa-plus-square"></i>  Nowy adres</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Miejscowosc)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Ulica)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.NrDomu)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.NrLokalu)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.KodPocztowy)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Miejscowosc)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Ulica)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.NrDomu)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.NrLokalu)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.KodPocztowy)
+            </td>
+            <td>
+                <a asp-action="AddOrEdit" asp-route-id="@item.AdresId"><i class="fa fa-marker fa-lg"></i></a>
+                <a asp-action="Delete" asp-route-id="@item.AdresId" class="text-danger ml-1" onclick="return confirm('Czt na pewno chcesz usunąć tą część?')"><i class="fa fa-trash-alt fa-lg"></i></a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
