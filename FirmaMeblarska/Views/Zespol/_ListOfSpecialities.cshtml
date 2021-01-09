@@ -1,0 +1,14 @@
+﻿@model IEnumerable<FirmaMeblarska.Models.ZespolPracownik>
+<br />
+<dl class="dl-horizontal">
+    <dt>
+        <strong>List of Specialties</strong>
+    </dt>
+    <dd>
+        @foreach (var item in Model)
+        {
+            @item.Pracowniks.FullName <br />
+
+        }
+    </dd>
+</dl>

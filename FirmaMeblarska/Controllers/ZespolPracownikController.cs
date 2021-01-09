@@ -66,6 +66,7 @@ namespace FirmaMeblarska.Controllers
         // GET: ZespolPracownik/Create
         public IActionResult Create()
         {
+
             ViewData["PracownikId"] = new SelectList(_context.Pracownik, "PracownikId", "Email");
             return View();
         }

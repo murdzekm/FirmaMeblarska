@@ -18,6 +18,8 @@ namespace FirmaMeblarska.Models
         public string Nazwa { get; set; }
 
         public IList<ZespolPracownik> ZespolPracownik { get; set; }
+
+        
         //public ICollection<Zamowienie> Zamowienie { get; set; }
 
     }

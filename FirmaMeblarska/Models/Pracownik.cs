@@ -29,6 +29,14 @@ namespace FirmaMeblarska.Models
         [Display(Name = "Adres")]
         public int AdresId { get; set; }
 
+        public string FullName
+        {
+            get
+            {
+                return  Imie +" "+ Nazwisko;
+            }
+        }
+
         [NotMapped]
         public string Adres { get; set; }
 

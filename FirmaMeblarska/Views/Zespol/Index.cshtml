@@ -1,0 +1,38 @@
+﻿@model IEnumerable<FirmaMeblarska.Models.Zespol>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Zespoły</h1>
+
+<p>
+    <a asp-action="Create" class="btn btn-outline-success"><i class="far fa-plus-square"></i>  Nowy Zespół</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Nazwa)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Nazwa)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.ZespolId"><i class="fa fa-marker fa-lg"></i></a>
+                <a asp-action="Delete" asp-route-id="@item.ZespolId" class="text-danger ml-1" onclick="return confirm('Czt na pewno chcesz usunąć tą część?')"><i class="fa fa-trash-alt fa-lg"></i></a>
+                <a asp-action="Details" asp-route-id="@item.ZespolId">Details</a> 
+            </td>
+                
+            
+        </tr>
+}
+    </tbody>
+</table>
