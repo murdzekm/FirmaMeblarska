@@ -13,10 +13,7 @@ namespace FirmaMeblarska.Models
         
         public int PracownikId { get; set; }    
 
-        [NotMapped]
-        public string  Zespol { get; set; }
-        [NotMapped]
-        public string Pracownik { get; set; }
+        
 
         public  Zespol Zespols { get; set; }
         public  Pracownik Pracowniks { get; set; }

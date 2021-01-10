@@ -1,19 +1,19 @@
-﻿@model FirmaMeblarska.Models.Adres
+﻿@model FirmaMeblarska.ViewModels.AdresVW
 
 @{
-    ViewData["Title"] = "Adres";
+    ViewData["Title"] = "Pracownik";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 
-<h4>Adres</h4>
+<h4>AdresVW</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="AddOrEdit">
+        <form asp-action="AddPracownikAdres">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
             <input type="hidden" asp-for="AdresId" />
-            <input type="hidden" name="returnUrl" value="@ViewBag.returnUrl" />
             <div class="form-group">
                 <label asp-for="Miejscowosc" class="control-label"></label>
                 <input asp-for="Miejscowosc" class="form-control" />
@@ -39,18 +39,37 @@
                 <input asp-for="KodPocztowy" class="form-control" />
                 <span asp-validation-for="KodPocztowy" class="text-danger"></span>
             </div>
-            <div class="form-row">
-                <div class="form-group col-md-6">
-                    <input type="submit" value="Zapisz" class="btn btn-primary btn-block"  />
-                </div>
-                <div class="form-group col-md-6">
-                    <a asp-action="Index" class="btn btn-secondary btn-block"><i class="fa fa-table"></i>  Powrót do listy części</a>
-                </div>
+            <input type="hidden" asp-for="PracownikId" />
+            <div class="form-group">
+                <label asp-for="Imie" class="control-label"></label>
+                <input asp-for="Imie" class="form-control" />
+                <span asp-validation-for="Imie" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Nazwisko" class="control-label"></label>
+                <input asp-for="Nazwisko" class="form-control" />
+                <span asp-validation-for="Nazwisko" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Email" class="control-label"></label>
+                <input asp-for="Email" class="form-control" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Telefon" class="control-label"></label>
+                <input asp-for="Telefon" class="form-control" />
+                <span asp-validation-for="Telefon" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
             </div>
         </form>
     </div>
 </div>
 
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

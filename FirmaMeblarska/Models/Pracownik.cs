@@ -38,9 +38,9 @@ namespace FirmaMeblarska.Models
         }
 
         [NotMapped]
-        public string Adres { get; set; }
+        public string Adress { get; set; }
 
-        public Adres adres { get; set; }
+        public Adres Adres { get; set; }
         public ICollection<ZespolPracownik> ZespolPracownik { get; set; }
     }
 }

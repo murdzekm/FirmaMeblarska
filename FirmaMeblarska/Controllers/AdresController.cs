@@ -29,6 +29,7 @@ namespace FirmaMeblarska.Controllers
         // GET: Adres/Create
         public IActionResult AddOrEdit(int id = 0)
         {
+            ViewBag.returnUrl = Request.Headers["Referer"].ToString();
             if (id == 0)
                 return View(new Adres());
             else
@@ -40,7 +41,7 @@ namespace FirmaMeblarska.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> AddOrEdit([Bind("AdresId,Miejscowosc,Ulica,NrDomu,NrLokalu,KodPocztowy")] Adres adres)
+        public async Task<IActionResult> AddOrEdit([Bind("AdresId,Miejscowosc,Ulica,NrDomu,NrLokalu,KodPocztowy")] Adres adres, string returnUrl)
         {
             if (ModelState.IsValid)
             {
@@ -53,8 +54,9 @@ namespace FirmaMeblarska.Controllers
                     _context.Update(adres);
                 }
                  await _context.SaveChangesAsync();
-                 return RedirectToAction(nameof(Index));
-                
+               
+                //return RedirectToAction(nameof(Index));
+                return Redirect(returnUrl);
 
             }
             return View(adres);

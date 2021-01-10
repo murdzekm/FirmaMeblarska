@@ -97,14 +97,16 @@
                         </a>@if (User.IsInRole("Admin"))
                         {
                             <div class="sb-sidenav-menu-heading">Zmiana atrybutów</div>
+                            <a class="nav-link" asp-area="" asp-controller="Adres" asp-action="Index">
+                                <div class="sb-nav-link-icon"><i class="fas fa-box"></i></div>
+                                Adresy
+                            </a>
+
                             <a class="nav-link" asp-area="" asp-controller="Status" asp-action="Index">
                                 <div class="sb-nav-link-icon"><i class="fas fa-box"></i></div>
                                 Status
                             </a>
-                            <a class="nav-link" asp-area="" asp-controller="ZespolPracownik" asp-action="Index">
-                                <div class="sb-nav-link-icon"><i class="fas fa-box"></i></div>
-                                Zespół-Pracownik
-                            </a>
+
                             <a class="nav-link" asp-area="" asp-controller="Zespol" asp-action="Index">
                                 <div class="sb-nav-link-icon"><i class="fas fa-box"></i></div>
                                 Zespoły
@@ -116,7 +118,7 @@
 
 
                         }
-                        </div>
+                    </div>
                 </div>
                 <div class="sb-sidenav-footer">
                     <div class="small">Logged in as:</div>

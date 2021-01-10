@@ -79,39 +79,7 @@ namespace FirmaMeblarska.Controllers
             PopulateAssignedConditionData(zespol);
             return View(zespol);
         
-            /*
-            try
-            {
-
             
-                if (selectedConditions != null)
-                {
-                    zespol.ZespolPracownik = new List<ZespolPracownik>();
-                    foreach (var cond in selectedConditions)
-                    {
-                        var condToAdd = new ZespolPracownik { ZespolId = zespol.ZespolId, PracownikId = int.Parse(cond) };
-                        zespol.ZespolPracownik.Add(condToAdd);
-                    }
-                }
-
-                if (ModelState.IsValid)
-                {
-
-                    _context.Add(zespol);
-
-
-                    await _context.SaveChangesAsync();
-                    return RedirectToAction(nameof(Index));
-                    //return RedirectToAction("Index", "PatientAppt", new { PatientID = patient.ID });
-                }
-            }
-            catch (RetryLimitExceededException /* dex *///)
-           /* {
-                ModelState.AddModelError("", "Unable to save changes after multiple attempts. Try again, and if the problem persists, see your system administrator.");
-            }
-
-            PopulateAssignedConditionData(zespol);
-            return View(zespol);*/
         }
 
         // GET: Zespol/Edit/5
@@ -186,8 +154,7 @@ namespace FirmaMeblarska.Controllers
                 }
 
             }
-            //Validaiton Error so give the user another chance.
-            //Validaiton Error so give the user another chance.
+            
             PopulateAssignedConditionData(zespolToUpdate);
             return View(zespolToUpdate);
         

@@ -6,9 +6,13 @@
 }
 
 <h1>Pracownicy</h1>
-
+<!--
 <p>
     <a asp-action="AddOrEdit" class="btn btn-outline-success"><i class="far fa-plus-square"></i>  Nowy pracownik</a>
+</p>-->
+
+<p>
+    <a asp-action="AddPracownikAdres" class="btn btn-outline-success"><i class="far fa-plus-square"></i>  Nowy pracownik</a>
 </p>
 <table class="table">
     <thead>
@@ -25,9 +29,9 @@
             <th>
                 @Html.DisplayNameFor(model => model.Telefon)
             </th>
-            
+
             <th>
-                @Html.DisplayNameFor(model => model.Adres)
+                @Html.DisplayNameFor(model => model.Adress)
             </th>
             <th></th>
         </tr>
@@ -35,28 +39,28 @@
     <tbody>
         @foreach (var item in Model)
         {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Imie)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Nazwisko)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Email)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Telefon)
-            </td>
-            
-            <td>
-                @Html.DisplayFor(modelItem => item.Adres)
-            </td>
-            <td>
-                <a asp-action="AddOrEdit" asp-route-id="@item.PracownikId"><i class="fa fa-marker fa-lg"></i></a>
-                <a asp-action="Delete" asp-route-id="@item.PracownikId" class="text-danger ml-1" onclick="return confirm('Czt na pewno chcesz usunąć tą część?')"><i class="fa fa-trash-alt fa-lg"></i></a>
-            </td>
-        </tr>
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Imie)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Nazwisko)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Email)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Telefon)
+                </td>
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.Adress)
+                </td>
+                <td>
+                    <a asp-action="AddOrEdit" asp-route-id="@item.PracownikId"><i class="fa fa-marker fa-lg"></i></a>
+                    <a asp-action="Delete" asp-route-id="@item.PracownikId" class="text-danger ml-1" onclick="return confirm('Czt na pewno chcesz usunąć tą część?')"><i class="fa fa-trash-alt fa-lg"></i></a>
+                </td>
+            </tr>
         }
     </tbody>
 </table>
