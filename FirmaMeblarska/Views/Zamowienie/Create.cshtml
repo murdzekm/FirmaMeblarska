@@ -1,0 +1,88 @@
+﻿@model FirmaMeblarska.Models.Zamowienie
+
+@{
+    ViewData["Title"] = "Zamówienie";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Zamówienie</h1>
+
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="DataZlozenia" class="control-label"></label>
+                <input asp-for="DataZlozenia" class="form-control" />
+                <span asp-validation-for="DataZlozenia" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Cena" class="control-label"></label>
+                <input asp-for="Cena" class="form-control" />
+                <span asp-validation-for="Cena" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="StatusId" class="control-label"></label>
+                @Html.DropDownListFor(model => model.StatusId, (SelectList)ViewBag.StatusList, new { @class = "form-control" })
+                <span asp-validation-for="StatusId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="KlientId" class="control-label"></label>
+                @Html.DropDownListFor(model => model.KlientId, (SelectList)ViewBag.KlientList, "Wybierz klienta", new { @class = "form-control" })
+
+                <span asp-validation-for="KlientId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ZespolId" class="control-label"></label>
+                @Html.DropDownListFor(model => model.ZespolId, (SelectList)ViewBag.ZespolList, "Wybierz zespół", new { @class = "form-control" })
+                <span asp-validation-for="ZespolId" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="AdresId" class="control-label"></label>
+                @Html.DropDownListFor(model => model.AdresId, (SelectList)ViewBag.AdresList, "Wybierz adres", new { @class = "form-control" })
+                <span asp-validation-for="AdresId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label class="control-label">Pracownicy</label>
+                <div class="col-md-offset-1">
+                    <table>
+                        <tr>
+                            @{
+                                int cnt = 0;
+                                List<FirmaMeblarska.ViewModels.PlytaVW> conds = ViewBag.Conditions;
+                                foreach (var cond in conds)
+                                {
+                                    if (cnt++ % 3 == 0)
+                                    {
+                                    @:</tr><tr>
+                                    }
+                                    @:<td>
+                                        <input type="checkbox"
+                                               name="selectedConditions"
+                                               value="@cond.PlytaId"
+                                               @(Html.Raw(cond.Assigned ? "checked=\"checked\"" : "")) />
+                                        @cond.Nazwa @:&nbsp;&nbsp;
+                                    @:</td>
+                                }
+                            @:</tr>
+                            }
+                        </table>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <input type="submit" value="Zapisz" class="btn btn-primary btn-block" />
+                    </div>
+                    <div class="form-group col-md-6">
+                        <a asp-action="Index" class="btn btn-secondary btn-block"><i class="fa fa-table"></i>  Powrót do listy zamówień</a>
+                    </div>
+                </div>
+            </form>
+    </div>
+</div>
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
