@@ -17,10 +17,10 @@ namespace FirmaMeblarska.Models
         [Column(TypeName = "nvarchar(20)")]
         public string Nazwa { get; set; }
 
-        public IList<ZespolPracownik> ZespolPracownik { get; set; }
+        //public IList<ZespolPracownik> ZespolPracownik { get; set; }
 
         
-        //public ICollection<Zamowienie> Zamowienie { get; set; }
+        public ICollection<ZespolPracownik> ZespolPracownik { get; set; }
 
     }
 }

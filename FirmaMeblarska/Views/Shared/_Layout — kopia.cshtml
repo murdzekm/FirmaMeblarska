@@ -61,7 +61,17 @@
 
 
                         <div class="sb-sidenav-menu-heading">Interface</div>
-
+                        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseLayouts" aria-expanded="false" aria-controls="collapseLayouts">
+                            <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
+                            Layouts
+                            <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                        </a>
+                        <div class="collapse" id="collapseLayouts" aria-labelledby="headingOne" data-parent="#sidenavAccordion">
+                            <nav class="sb-sidenav-menu-nested nav">
+                                <a class="nav-link" href="layout-static.html">Static Navigation</a>
+                                <a class="nav-link" href="layout-sidenav-light.html">Light Sidenav</a>
+                            </nav>
+                        </div>
                         <a class="nav-link collapsed" asp-area="" asp-controller="Plyta" asp-action="Index" data-toggle="collapse" data-target="#collapsePages" aria-expanded="false" aria-controls="collapsePages">
                             <div class="sb-nav-link-icon"><i class="fas fa-book-open"></i></div>
                             Płyty
@@ -91,45 +101,27 @@
                                 <div class="sb-nav-link-icon"><i class="fas fa-box"></i></div>
                                 Adresy
                             </a>
-                            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseLayouts" aria-expanded="false" aria-controls="collapseLayouts">
-                                <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
-                                Firma
-                                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+
+                            <a class="nav-link" asp-area="" asp-controller="Status" asp-action="Index">
+                                <div class="sb-nav-link-icon"><i class="fas fa-box"></i></div>
+                                Status
                             </a>
-                            <div class="collapse" id="collapseLayouts" aria-labelledby="headingOne" data-parent="#sidenavAccordion">
-                                <nav class="sb-sidenav-menu-nested nav">
-                                    <a class="nav-link" asp-area="" asp-controller="Zespol" asp-action="Index">
-                                        <div class="sb-nav-link-icon"><i class="fas fa-box"></i></div>
-                                        Zespoły
-                                    </a>
-                                    <a class="nav-link" asp-area="" asp-controller="Maszyna" asp-action="Index">
-                                        <div class="sb-nav-link-icon"><i class="fas fa-box"></i></div>
-                                        Maszyny
-                                    </a>
 
-                                    <a class="nav-link" asp-area="" asp-controller="Narzedzie" asp-action="Index">
-                                        <div class="sb-nav-link-icon"><i class="fas fa-box"></i></div>
-                                        Narzędzia
-                                    </a>
+                            <a class="nav-link" asp-area="" asp-controller="Zespol" asp-action="Index">
+                                <div class="sb-nav-link-icon"><i class="fas fa-box"></i></div>
+                                Zespoły
+                            </a>
+                            <a class="nav-link" asp-area="" asp-controller="Role" asp-action="Index">
+                                <div class="sb-nav-link-icon"><i class="fas fa-box"></i></div>
+                                Role
+                            </a>
 
-                                    <a class="nav-link" asp-area="" asp-controller="Status" asp-action="Index">
-                                        <div class="sb-nav-link-icon"><i class="fas fa-box"></i></div>
-                                        Status
-                                    </a>
-
-
-                                    <a class="nav-link" asp-area="" asp-controller="Role" asp-action="Index">
-                                        <div class="sb-nav-link-icon"><i class="fas fa-box"></i></div>
-                                        Role
-                                    </a>
-                                </nav>
-                            </div>
 
                         }
                     </div>
                 </div>
                 <div class="sb-sidenav-footer">
-                    <div class="small">Zalogowany jako:</div>
+                    <div class="small">Logged in as:</div>
                     @UserManager.GetUserName(User)
 
                 </div>

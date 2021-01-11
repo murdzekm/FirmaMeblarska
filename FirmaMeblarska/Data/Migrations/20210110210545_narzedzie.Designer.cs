@@ -4,14 +4,16 @@ using FirmaMeblarska.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace FirmaMeblarska.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210110210545_narzedzie")]
+    partial class narzedzie
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -133,13 +135,13 @@ namespace FirmaMeblarska.Data.Migrations
 
                     b.Property<string>("Nazwa")
                         .IsRequired()
-                        .HasColumnType("nvarchar(150)");
+                        .HasColumnType("nvarchar(30)");
 
                     b.Property<string>("NrSeryjny")
                         .IsRequired()
                         .HasColumnType("nvarchar(20)");
 
-                    b.Property<int?>("PracownikId")
+                    b.Property<int>("PracownikId")
                         .HasColumnType("int");
 
                     b.HasKey("NarzedzieId");
@@ -200,21 +202,6 @@ namespace FirmaMeblarska.Data.Migrations
                     b.ToTable("Pracownik");
                 });
 
-            modelBuilder.Entity("FirmaMeblarska.Models.PracownikMaszyna", b =>
-                {
-                    b.Property<int>("MaszynaId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("PracownikId")
-                        .HasColumnType("int");
-
-                    b.HasKey("MaszynaId", "PracownikId");
-
-                    b.HasIndex("PracownikId");
-
-                    b.ToTable("PracownikMaszyna");
-                });
-
             modelBuilder.Entity("FirmaMeblarska.Models.Status", b =>
                 {
                     b.Property<int>("StatusId")
@@ -231,43 +218,7 @@ namespace FirmaMeblarska.Data.Migrations
                     b.ToTable("Status");
                 });
 
-            modelBuilder.Entity("FirmaMeblarska.Models.Zamowienie", b =>
-                {
-                    b.Property<int>("ZamowienieId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("AdresId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Cena")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("DataZlozenia")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("KlientId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("StatusId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ZespolId")
-                        .HasColumnType("int");
-
-                    b.HasKey("ZamowienieId");
-
-                    b.HasIndex("AdresId");
-
-                    b.HasIndex("KlientId");
-
-                    b.HasIndex("StatusId");
-
-                    b.HasIndex("ZespolId");
-
-                    b.ToTable("Zamowienie");
-                });
+            
 
             modelBuilder.Entity("FirmaMeblarska.Models.ZamowieniePlyta", b =>
                 {
@@ -524,7 +475,9 @@ namespace FirmaMeblarska.Data.Migrations
                 {
                     b.HasOne("FirmaMeblarska.Models.Pracownik", "Pracownik")
                         .WithMany("Narzedzie")
-                        .HasForeignKey("PracownikId");
+                        .HasForeignKey("PracownikId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("FirmaMeblarska.Models.Pracownik", b =>
@@ -536,47 +489,7 @@ namespace FirmaMeblarska.Data.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("FirmaMeblarska.Models.PracownikMaszyna", b =>
-                {
-                    b.HasOne("FirmaMeblarska.Models.Maszyna", "Maszynas")
-                        .WithMany("PracownikMaszyna")
-                        .HasForeignKey("MaszynaId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("FirmaMeblarska.Models.Pracownik", "Pracowniks")
-                        .WithMany("PracownikMaszyna")
-                        .HasForeignKey("PracownikId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("FirmaMeblarska.Models.Zamowienie", b =>
-                {
-                    b.HasOne("FirmaMeblarska.Models.Adres", "Adres")
-                        .WithMany("Zamowienie")
-                        .HasForeignKey("AdresId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("FirmaMeblarska.Models.Klient", "Klient")
-                        .WithMany("Zamowienie")
-                        .HasForeignKey("KlientId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("FirmaMeblarska.Models.Status", "Status")
-                        .WithMany()
-                        .HasForeignKey("StatusId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("FirmaMeblarska.Models.Zespol", "Zespol")
-                        .WithMany()
-                        .HasForeignKey("ZespolId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
+           
 
             modelBuilder.Entity("FirmaMeblarska.Models.ZamowieniePlyta", b =>
                 {

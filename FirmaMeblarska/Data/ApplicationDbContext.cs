@@ -19,6 +19,7 @@ namespace FirmaMeblarska.Data
             base.OnModelCreating(builder);
             builder.Entity<ZamowieniePlyta>().HasKey(zp => new { zp.ZamowienieId, zp.PlytaId });
             builder.Entity<ZespolPracownik>().HasKey(zp => new { zp.ZespolId, zp.PracownikId });
+            builder.Entity<PracownikMaszyna>().HasKey(zp => new { zp.MaszynaId, zp.PracownikId });
             /*builder.Entity<Zamowienie>()
                 .HasKey(z => z.ZamowienieId);
             builder.Entity<Klient>().HasKey(k => k.KlientId);

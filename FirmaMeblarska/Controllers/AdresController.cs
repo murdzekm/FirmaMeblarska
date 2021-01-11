@@ -47,6 +47,11 @@ namespace FirmaMeblarska.Controllers
             {
                 if (adres.AdresId == 0)
                 {
+                    if (adres.NrLokalu == null)
+                       adres.NrLokalu = " ";
+                    if (adres.Ulica == null)
+                        adres.Ulica = " ";
+
                     _context.Add(adres);
                 }
                 else

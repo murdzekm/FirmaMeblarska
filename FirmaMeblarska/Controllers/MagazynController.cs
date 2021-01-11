@@ -33,7 +33,8 @@ namespace FirmaMeblarska.Controllers
         // GET: Magazyn/Create
         public IActionResult AddOrEdit(int id = 0)
         {
-            if(id == 0)
+            
+            if (id == 0)
                 return View(new Magazyn());
             else
                 return View(_context.Magazyn.Find(id));
@@ -70,6 +71,7 @@ namespace FirmaMeblarska.Controllers
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
+        
 
     }
 }

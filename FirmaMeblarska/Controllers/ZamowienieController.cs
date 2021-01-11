@@ -33,8 +33,10 @@ namespace FirmaMeblarska.Controllers
                                on a.ZespolId equals c.ZespolId
                                join d in _context.Status
                                on a.StatusId equals d.StatusId
+                               join e in _context.Adres
+                               on a.AdresId equals e.AdresId
                                into ZamoKli
-                               from d in ZamoKli.DefaultIfEmpty()
+                               from e in ZamoKli.DefaultIfEmpty()
 
                                select new Zamowienie
                                {
@@ -47,8 +49,8 @@ namespace FirmaMeblarska.Controllers
                                    Klients = b == null ? "" : b.Imie + " " + b.Nazwisko,
                                    ZespolId = a.ZespolId,
                                    Zespols = c == null ? "" : c.Nazwa,
-
-
+                                   AdresId = a.AdresId,
+                                   Adress = e == null ? "" : e.Miejscowosc+ " " +e.Ulica + " " + e.NrDomu + " " + e.NrLokalu + " " + e.KodPocztowy
                                };
 
                 return View(pracList);
@@ -79,7 +81,7 @@ namespace FirmaMeblarska.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> AddOrEdit([Bind("ZamowienieId,DataZlozenia,Cena,StatusId,KlientId,ZespolId")] Zamowienie zamowienie)
+        public async Task<IActionResult> AddOrEdit([Bind("ZamowienieId,DataZlozenia,Cena,StatusId,KlientId,ZespolId,AdresId")] Zamowienie zamowienie)
         {
             if (ModelState.IsValid)
             {
@@ -154,6 +156,19 @@ namespace FirmaMeblarska.Controllers
                         .ToList();
 
                 ViewBag.ZespolList = new SelectList(zespols, "Value", "Text");
+
+                List<Adres> AdresList = new List<Adres>();
+
+
+                var adress = _context.Adres
+                        .Select(s => new
+                        {
+                            Text = s.Miejscowosc + " " + s.Ulica + " " + s.NrDomu + " " +s.NrLokalu + " " +s.KodPocztowy,
+                            Value = s.AdresId
+                        })
+                        .ToList();
+
+                ViewBag.AdresList = new SelectList(adress, "Value", "Text");
 
             }
             catch (Exception ex)

@@ -24,6 +24,13 @@ namespace FirmaMeblarska.Models
 
         [DisplayName("Data przegladu")]
         [Required(ErrorMessage = "Wymagane")]
+        [DataType(DataType.Date)]
         public DateTime DataPrzegladu { get; set; }
+        public Maszyna()
+        {
+            DataPrzegladu = DateTime.Now;
+        }
+        public IList<PracownikMaszyna> PracownikMaszyna { get; set; }
+
     }
 }

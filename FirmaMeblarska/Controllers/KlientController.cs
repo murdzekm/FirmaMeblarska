@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using FirmaMeblarska.Models;
 using FirmaMeblarska.Data;
+using FirmaMeblarska.ViewModels;
 
 namespace FirmaMeblarska.Controllers
 {
@@ -40,7 +41,7 @@ namespace FirmaMeblarska.Controllers
                                    Email = a.Email,
                                    Telefon = a.Telefon,
                                    AdresId = a.AdresId,
-                                   Adres = b == null ? "" : b.Miejscowosc + " " + b.Ulica + " " + b.NrDomu + " " + b.KodPocztowy
+                                   Adres = b == null ? " " : b.Miejscowosc + " " + b.Ulica + " " + b.NrDomu + " "+ b.NrLokalu +" " + b.KodPocztowy
 
                                };
 
@@ -86,6 +87,51 @@ namespace FirmaMeblarska.Controllers
 
             }
             return View(klient);
+        }
+
+
+        [HttpGet]
+        public ActionResult AddKlientAdres()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult AddKlientAdres(/*[Bind("PracownikId,Imie,Nazwisko,Email,Telefon,AdresId,Miejscowosc,Ulica,NrDomu,NrLokalu,KodPocztowy")] */AdresKlientVW obj)
+        {
+            try
+            {
+                int lastestAdrId;
+                Adres a = new Adres();
+                a.Miejscowosc = obj.Miejscowosc;
+                a.Ulica = obj.Ulica;
+                a.NrDomu = obj.NrDomu;
+                a.NrLokalu = obj.NrLokalu;
+                a.KodPocztowy = obj.KodPocztowy;                
+                _context.Adres.Add(a);
+                _context.SaveChanges();
+                
+                lastestAdrId = a.AdresId;
+
+                Klient p = new Klient();
+                p.Imie = obj.Imie;
+                p.Nazwisko = obj.Nazwisko;
+                p.Email = obj.Email;
+                p.Telefon = obj.Telefon;
+                p.AdresId = lastestAdrId;
+
+                _context.Klient.Add(p);
+                _context.SaveChanges();
+
+
+            }
+            catch (Exception ex)
+            {
+
+                ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists see your system administrator.");
+            }
+            return RedirectToAction(nameof(Index));
+
         }
 
 

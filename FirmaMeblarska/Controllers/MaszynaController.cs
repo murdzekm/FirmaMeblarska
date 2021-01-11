@@ -7,43 +7,43 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using FirmaMeblarska.Data;
 using FirmaMeblarska.Models;
+using FirmaMeblarska.Utilities;
 using FirmaMeblarska.ViewModels;
 using Microsoft.EntityFrameworkCore.Storage;
-using FirmaMeblarska.Utilities;
 
 namespace FirmaMeblarska.Controllers
 {
-    public class ZespolController : Controller
+    public class MaszynaController : Controller
     {
         private readonly ApplicationDbContext _context;
 
-        public ZespolController(ApplicationDbContext context)
+        public MaszynaController(ApplicationDbContext context)
         {
             _context = context;
         }
-
-        // GET: Zespol
+        //public async Task<IActionResult> Create([Bind("MaszynaId,Nazwa,NrSeryjny,DataPrzegladu")] Maszyna maszyna, string[] selectedConditions)
         public async Task<IActionResult> Index(int? page)
         {
-            var zespol = from d in _context.Zespol
-                .Include(d => d.ZespolPracownik).ThenInclude(d => d.Pracowniks)
-                          select d;
+            var zespol = from d in _context.Maszyna
+                .Include(d => d.PracownikMaszyna).ThenInclude(d => d.Pracowniks)
+                         select d;
 
             int pageSize = 3;//Change as required
-            var pagedData = await PaginatedList<Zespol>.CreateAsync(zespol.AsNoTracking(), page ?? 1, pageSize);
+            var pagedData = await PaginatedList<Maszyna>.CreateAsync(zespol.AsNoTracking(), page ?? 1, pageSize);
 
-            return View(pagedData);           
+            return View(pagedData);
+            //return View(await _context.Maszyna.ToListAsync());
         }
 
-        
-        
+
+
 
         // GET: Zespol/Create
         public IActionResult Create()
         {
-            var zespol = new Zespol();
-            zespol.ZespolPracownik = new List<ZespolPracownik>();
-            PopulateAssignedConditionData(zespol);         
+            var maszyna = new Maszyna();
+            maszyna.PracownikMaszyna = new List<PracownikMaszyna>();
+            PopulateAssignedConditionData(maszyna);
             return View();
         }
 
@@ -52,24 +52,24 @@ namespace FirmaMeblarska.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ZespolId,Nazwa")] Zespol zespol, string[] selectedConditions)
+        public async Task<IActionResult> Create([Bind("MaszynaId,Nazwa,NrSeryjny,DataPrzegladu")] Maszyna maszyna, string[] selectedConditions)
         {
             try
             {
                 if (selectedConditions != null)
                 {
-                    zespol.ZespolPracownik = new List<ZespolPracownik>();
+                    maszyna.PracownikMaszyna = new List<PracownikMaszyna>();
                     foreach (var cond in selectedConditions)
                     {
-                        var condToAdd = new ZespolPracownik { ZespolId = zespol.ZespolId, PracownikId = int.Parse(cond) };
-                        zespol.ZespolPracownik.Add(condToAdd);
+                        var condToAdd = new PracownikMaszyna { MaszynaId = maszyna.MaszynaId, PracownikId = int.Parse(cond) };
+                        maszyna.PracownikMaszyna.Add(condToAdd);
                     }
                 }
 
-               // UpdateZespolPracownik(selectedConditions, zespol);
+                //UpdateZespolPracownik(selectedConditions, zespol);
                 if (ModelState.IsValid)
                 {
-                    _context.Add(zespol);
+                    _context.Add(maszyna);
                     await _context.SaveChangesAsync();
                     return RedirectToAction(nameof(Index));
                 }
@@ -79,10 +79,10 @@ namespace FirmaMeblarska.Controllers
                 ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists see your system administrator.");
             }
 
-            PopulateAssignedConditionData(zespol);
-            return View(zespol);
-        
-            
+            PopulateAssignedConditionData(maszyna);
+            return View(maszyna);
+
+
         }
 
         // GET: Zespol/Edit/5
@@ -93,10 +93,10 @@ namespace FirmaMeblarska.Controllers
                 return NotFound();
             }
 
-            var zespol = await _context.Zespol
-                .Include(p => p.ZespolPracownik).ThenInclude(p => p.Pracowniks)
+            var zespol = await _context.Maszyna
+                .Include(p => p.PracownikMaszyna).ThenInclude(p => p.Pracowniks)
                 .AsNoTracking()
-                .SingleOrDefaultAsync(p => p.ZespolId == id);
+                .SingleOrDefaultAsync(p => p.MaszynaId == id);
             //.FindAsync(id);
             if (zespol == null)
             {
@@ -115,11 +115,11 @@ namespace FirmaMeblarska.Controllers
         public async Task<IActionResult> Edit(int id, string[] selectedConditions)
         {
 
-            var zespolToUpdate = await _context.Zespol
-                .Include(d => d.ZespolPracownik).ThenInclude(d => d.Pracowniks)
-                .SingleOrDefaultAsync(d => d.ZespolId == id);
+            var zespolToUpdate = await _context.Maszyna
+                .Include(d => d.PracownikMaszyna).ThenInclude(d => d.Pracowniks)
+                .SingleOrDefaultAsync(d => d.MaszynaId == id);
             //Check that you got it or exit with a not found error
-                       
+
 
             if (zespolToUpdate == null)
             {
@@ -128,8 +128,8 @@ namespace FirmaMeblarska.Controllers
 
             UpdateZespolPracownik(selectedConditions, zespolToUpdate);
 
-            if (await TryUpdateModelAsync<Zespol>(zespolToUpdate, "",
-                d => d.Nazwa))
+            if (await TryUpdateModelAsync<Maszyna>(zespolToUpdate, "",
+                d => d.Nazwa, d => d.NrSeryjny, d => d.DataPrzegladu))
             {
                 try
                 {
@@ -142,7 +142,7 @@ namespace FirmaMeblarska.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!ZespolExists(zespolToUpdate.ZespolId))
+                    if (!ZespolExists(zespolToUpdate.MaszynaId))
                     {
                         return NotFound();
                     }
@@ -157,11 +157,11 @@ namespace FirmaMeblarska.Controllers
                 }
 
             }
-            
+
             PopulateAssignedConditionData(zespolToUpdate);
             return View(zespolToUpdate);
-        
-    }
+
+        }
 
         // GET: Zespol/Delete/5
         public async Task<IActionResult> Delete(int? id)
@@ -171,8 +171,8 @@ namespace FirmaMeblarska.Controllers
                 return NotFound();
             }
 
-            var zespol = await _context.Zespol
-                .FirstOrDefaultAsync(m => m.ZespolId == id);
+            var zespol = await _context.Maszyna
+                .FirstOrDefaultAsync(m => m.MaszynaId == id);
             if (zespol == null)
             {
                 return NotFound();
@@ -186,8 +186,8 @@ namespace FirmaMeblarska.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var zespol = await _context.Zespol.FindAsync(id);
-            _context.Zespol.Remove(zespol);
+            var zespol = await _context.Maszyna.FindAsync(id);
+            _context.Maszyna.Remove(zespol);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
@@ -198,10 +198,10 @@ namespace FirmaMeblarska.Controllers
         }
 
 
-        private void PopulateAssignedConditionData(Zespol zespol)
+        private void PopulateAssignedConditionData(Maszyna zespol)
         {
             var allConditions = _context.Pracownik;
-            var pConditions = new HashSet<int>(zespol.ZespolPracownik.Select(b => b.PracownikId));
+            var pConditions = new HashSet<int>(zespol.PracownikMaszyna.Select(b => b.PracownikId));
             var viewModel = new List<AssignedConditionVM>();
             foreach (var con in allConditions)
             {
@@ -214,26 +214,26 @@ namespace FirmaMeblarska.Controllers
             }
             ViewData["Conditions"] = viewModel;
         }
-        private void UpdateZespolPracownik(string[] selectedConditions, Zespol zespolToUpdate)
+        private void UpdateZespolPracownik(string[] selectedConditions, Maszyna maszynaToUpdate)
         {
             if (selectedConditions == null)
             {
-                zespolToUpdate.ZespolPracownik = new List<ZespolPracownik>();
+                maszynaToUpdate.PracownikMaszyna = new List<PracownikMaszyna>();
                 return;
             }
 
             var selectedOptionsHS = new HashSet<string>(selectedConditions);
-            var docSpecialties = new HashSet<int>(zespolToUpdate.ZespolPracownik.Select(b => b.PracownikId));
+            var docSpecialties = new HashSet<int>(maszynaToUpdate.PracownikMaszyna.Select(b => b.PracownikId));
             foreach (var s in _context.Pracownik)
             {
                 if (selectedOptionsHS.Contains(s.PracownikId.ToString()))
                 {
                     if (!docSpecialties.Contains(s.PracownikId))
                     {
-                        zespolToUpdate.ZespolPracownik.Add(new ZespolPracownik
+                        maszynaToUpdate.PracownikMaszyna.Add(new PracownikMaszyna
                         {
                             PracownikId = s.PracownikId,
-                            ZespolId = zespolToUpdate.ZespolId
+                            MaszynaId = maszynaToUpdate.MaszynaId
                         });
                     }
                 }
@@ -241,13 +241,13 @@ namespace FirmaMeblarska.Controllers
                 {
                     if (docSpecialties.Contains(s.PracownikId))
                     {
-                        ZespolPracownik specToRemove = zespolToUpdate.ZespolPracownik.SingleOrDefault(d => d.PracownikId == s.PracownikId);
+                        PracownikMaszyna specToRemove = maszynaToUpdate.PracownikMaszyna.SingleOrDefault(d => d.PracownikId == s.PracownikId);
                         _context.Remove(specToRemove);
                     }
                 }
             }
         }
 
-       
+
     }
 }

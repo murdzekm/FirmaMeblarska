@@ -1,0 +1,48 @@
+﻿@model IEnumerable<FirmaMeblarska.Models.Narzedzie>
+
+@{
+    ViewData["Title"] = "Narzędzia";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Narzędzia</h1>
+
+<p>
+    <a asp-action="AddOrEdit" class="btn btn-outline-success"><i class="far fa-plus-square"></i>  Nowe narzędzie</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Nazwa)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.NrSeryjny)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Pracownik)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Nazwa)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.NrSeryjny)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Pracowniks)
+                </td>
+                <td>
+                    <a asp-action="AddOrEdit" asp-route-id="@item.NarzedzieId"><i class="fa fa-marker fa-lg"></i></a>
+                    <a asp-action="Delete" asp-route-id="@item.NarzedzieId" class="text-danger ml-1" onclick="return confirm('Czt na pewno chcesz usunąć tą część?')"><i class="fa fa-trash-alt fa-lg"></i></a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

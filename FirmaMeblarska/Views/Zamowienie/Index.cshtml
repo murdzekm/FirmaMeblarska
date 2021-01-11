@@ -23,16 +23,19 @@
                             @Html.DisplayNameFor(model => model.DataZlozenia)
                         </th>
                         <th>
-                            @Html.DisplayNameFor(model => model.Cena)
+                            @Html.DisplayNameFor(model => model.Klient)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Adres)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Zespol)
                         </th>
                         <th>
                             @Html.DisplayNameFor(model => model.Status)
                         </th>
                         <th>
-                            @Html.DisplayNameFor(model => model.Klient)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.Zespol)
+                            @Html.DisplayNameFor(model => model.Cena)
                         </th>
                         <th></th>
                     </tr>
@@ -40,27 +43,31 @@
                 <tbody>
                     @foreach (var item in Model)
                     {
-                        <tr>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.DataZlozenia)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Cena)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Status)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Klient)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Zespol)
-                            </td>
-                            <td>
-                                <a asp-action="AddOrEdit" asp-route-id="@item.ZamowienieId"><i class="fa fa-marker fa-lg"></i></a>
-                                <a asp-action="Delete" asp-route-id="@item.ZamowienieId" class="text-danger ml-1" onclick="return confirm('Czt na pewno chcesz usunąć tą część?')"><i class="fa fa-trash-alt fa-lg"></i></a>
-                            </td>
-                        </tr>
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.DataZlozenia)
+                        </td>
+
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Klients)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Adress)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Zespols)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Statuss)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Cena)
+                        </td>
+                        <td>
+                            <a asp-action="AddOrEdit" asp-route-id="@item.ZamowienieId"><i class="fa fa-marker fa-lg"></i></a>
+                            <a asp-action="Delete" asp-route-id="@item.ZamowienieId" class="text-danger ml-1" onclick="return confirm('Czt na pewno chcesz usunąć tą część?')"><i class="fa fa-trash-alt fa-lg"></i></a>
+                        </td>
+                    </tr>
                     }
                 </tbody>
             </table>

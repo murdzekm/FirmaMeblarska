@@ -101,7 +101,7 @@ namespace FirmaMeblarska.Controllers
         }
 
         [HttpPost]
-        public ActionResult AddPracownikAdres(/*[Bind("PracownikId,Imie,Nazwisko,Email,Telefon,AdresId,Miejscowosc,Ulica,NrDomu,NrLokalu,KodPocztowy")] */AdresVW obj)
+        public ActionResult AddPracownikAdres([Bind("PracownikId,Imie,Nazwisko,Email,Telefon,AdresId,Miejscowosc,Ulica,NrDomu,NrLokalu,KodPocztowy")] AdresVW obj)
         {
             try
             {
@@ -112,18 +112,23 @@ namespace FirmaMeblarska.Controllers
                 a.NrDomu = obj.NrDomu;
                 a.NrLokalu = obj.NrLokalu;
                 a.KodPocztowy = obj.KodPocztowy;
-                if(_context.Adres.Any(o => o.Miejscowosc == obj.Miejscowosc && o.Ulica == obj.Ulica)){
-                    // _context.Adres.Update(a);
-                    //_context.SaveChangesAsync();
-                   
+                /* if(_context.Adres.Any(o => o.Miejscowosc == obj.Miejscowosc && o.Ulica == obj.Ulica)){
+                     lastestAdrId = a.AdresId;
+                      _context.Adres.Update(a);
+                     _context.SaveChanges();
 
 
-                }
-                else
-                {
-                     _context.Adres.Add(a);
-                      _context.SaveChanges();
-                }
+
+                 }
+                 else
+                 {*/
+                if (obj.NrLokalu == null)
+                    a.NrLokalu = " ";
+                if (obj.Ulica == null)
+                    a.Ulica = " ";
+                _context.Adres.Add(a);
+                _context.SaveChanges();
+               // }
                 lastestAdrId = a.AdresId;
 
                 Pracownik p = new Pracownik();
@@ -186,6 +191,12 @@ namespace FirmaMeblarska.Controllers
                     a.NrDomu = obj.NrDomu;
                     a.NrLokalu = obj.NrLokalu;
                     a.KodPocztowy = obj.KodPocztowy;
+
+                    if (obj.NrLokalu == null)
+                        obj.NrLokalu = " ";
+                    if (obj.Ulica == null)
+                        obj.Ulica = " ";
+
                     _context.Adres.Update(a);
                     await _context.SaveChangesAsync();
 

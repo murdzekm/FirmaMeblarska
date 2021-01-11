@@ -18,7 +18,7 @@ namespace FirmaMeblarska.Models
         [DisplayName("Miejscowość")]
         public string Miejscowosc { get; set; }
 
-        [Required(ErrorMessage = "Wymagane")]
+        //[Required(ErrorMessage = "Wymagane")]
         [Column(TypeName = "nvarchar(50)")]
         public string Ulica { get; set; }
         [DisplayName("Nr domu")]
@@ -30,6 +30,14 @@ namespace FirmaMeblarska.Models
         [Column(TypeName = "nvarchar(6)")]
         [DisplayName("Kod pocztowy")]
         public string KodPocztowy { get; set; }
+
+        public Adres()
+        {
+            if(NrLokalu == null)
+            {
+                NrLokalu = " ";
+            }
+        }
 
         public ICollection<Klient> Klient { get; set; }
         public ICollection<Zamowienie> Zamowienie { get; set; }

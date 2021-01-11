@@ -9,16 +9,11 @@ namespace FirmaMeblarska.Models
 {
     public class ZamowieniePlyta
     {
-        
-            
-        public int ZamowienieId { get; set; }
-        //public ICollection<Zamowienie> Zamowienie { get; set; }
-
-        
-       public int PlytaId { get; set; }
-        // public ICollection<Plyta> Plyta { get; set; }
+                    
+        public int ZamowienieId { get; set; }       
+                
+       public int PlytaId { get; set; }        
        
-
         public Zamowienie Zamowienie { get; set; }
         public Plyta Plyta { get; set; }
     }

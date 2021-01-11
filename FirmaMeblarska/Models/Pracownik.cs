@@ -42,5 +42,7 @@ namespace FirmaMeblarska.Models
 
         public Adres Adres { get; set; }
         public ICollection<ZespolPracownik> ZespolPracownik { get; set; }
+        public ICollection<PracownikMaszyna> PracownikMaszyna { get; set; }
+        public ICollection<Narzedzie> Narzedzie { get; set; }
     }
 }

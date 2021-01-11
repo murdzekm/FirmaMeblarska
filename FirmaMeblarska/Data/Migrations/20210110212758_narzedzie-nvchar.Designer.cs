@@ -4,14 +4,16 @@ using FirmaMeblarska.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace FirmaMeblarska.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210110212758_narzedzie-nvchar")]
+    partial class narzedzienvchar
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -139,7 +141,7 @@ namespace FirmaMeblarska.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(20)");
 
-                    b.Property<int?>("PracownikId")
+                    b.Property<int>("PracownikId")
                         .HasColumnType("int");
 
                     b.HasKey("NarzedzieId");
@@ -198,21 +200,6 @@ namespace FirmaMeblarska.Data.Migrations
                     b.HasIndex("AdresId");
 
                     b.ToTable("Pracownik");
-                });
-
-            modelBuilder.Entity("FirmaMeblarska.Models.PracownikMaszyna", b =>
-                {
-                    b.Property<int>("MaszynaId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("PracownikId")
-                        .HasColumnType("int");
-
-                    b.HasKey("MaszynaId", "PracownikId");
-
-                    b.HasIndex("PracownikId");
-
-                    b.ToTable("PracownikMaszyna");
                 });
 
             modelBuilder.Entity("FirmaMeblarska.Models.Status", b =>
@@ -524,7 +511,9 @@ namespace FirmaMeblarska.Data.Migrations
                 {
                     b.HasOne("FirmaMeblarska.Models.Pracownik", "Pracownik")
                         .WithMany("Narzedzie")
-                        .HasForeignKey("PracownikId");
+                        .HasForeignKey("PracownikId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("FirmaMeblarska.Models.Pracownik", b =>
@@ -532,21 +521,6 @@ namespace FirmaMeblarska.Data.Migrations
                     b.HasOne("FirmaMeblarska.Models.Adres", "Adres")
                         .WithMany("Pracownik")
                         .HasForeignKey("AdresId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("FirmaMeblarska.Models.PracownikMaszyna", b =>
-                {
-                    b.HasOne("FirmaMeblarska.Models.Maszyna", "Maszynas")
-                        .WithMany("PracownikMaszyna")
-                        .HasForeignKey("MaszynaId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("FirmaMeblarska.Models.Pracownik", "Pracowniks")
-                        .WithMany("PracownikMaszyna")
-                        .HasForeignKey("PracownikId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
