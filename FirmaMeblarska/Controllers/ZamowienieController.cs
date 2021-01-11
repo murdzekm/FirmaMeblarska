@@ -65,9 +65,32 @@ namespace FirmaMeblarska.Controllers
            
         }
 
+        public async Task<IActionResult> Details(string id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var zamowienie = await _context.Zamowienie
+                    .Include(c => c.Klient)
+                    .Include(c => c.Status)
+                    .Include(c => c.Adres)
+                    .Include(c => c.Zespol)                    
+                    .SingleOrDefaultAsync(m => m.ZamowienieId.ToString() == id);
+            if (zamowienie == null)
+            {
+                return NotFound();
+            }
+
+            return View(zamowienie);
+        }
+
+
         public IActionResult Create()
         {
             loadDDL();
+
             var zamowienie = new Zamowienie();
             zamowienie.ZamowieniePlyta = new List<ZamowieniePlyta>();
             PopulateAssignedConditionData(zamowienie);
@@ -238,6 +261,31 @@ namespace FirmaMeblarska.Controllers
                 }
             }
         }
+
+        public async Task<IActionResult> ShowInvoice(string id)
+        {
+            Zamowienie obj = await _context.Zamowienie
+                .Include(c => c.Klient)
+                    .Include(c => c.Status)
+                    .Include(c => c.Adres)
+                    .Include(c => c.Zespol)
+                    .SingleOrDefaultAsync(m => m.ZamowienieId.ToString() == id);           
+
+            return View(obj);
+        }
+
+        public async Task<IActionResult> PrintInvoice(string id)
+        {
+            Zamowienie obj = await _context.Zamowienie
+                .Include(c => c.Klient)
+                    .Include(c => c.Status)
+                    .Include(c => c.Adres)
+                    .Include(c => c.Zespol)
+                    .SingleOrDefaultAsync(m => m.ZamowienieId.ToString() == id);
+
+            return View(obj);
+        }
+
 
         private bool ZamowienieExists(int id)
         {

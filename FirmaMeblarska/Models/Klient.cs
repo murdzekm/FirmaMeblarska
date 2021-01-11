@@ -32,6 +32,22 @@ namespace FirmaMeblarska.Models
 
         [NotMapped]
         public string Adres { get; set; }
+
+        public string FullName
+        {
+            get
+            {
+                return Imie + " " + Nazwisko;
+            }
+        }
+
+        public string Dane
+        {
+            get
+            {
+                return Imie + " " + Nazwisko + " " +Email + " " +Telefon ;
+            }
+        }
         public Adres adres { get; set; }
         public ICollection<Zamowienie> Zamowienie { get; set; }
     }

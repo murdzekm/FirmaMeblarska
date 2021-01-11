@@ -10,62 +10,70 @@
 <p>
     <a asp-action="Create" class="btn btn-outline-success"><i class="far fa-plus-square"></i>  Nowy Zespół</a>
 </p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Nazwa)
-            </th>
-            <th>
-                Pracownicy
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Nazwa)
-            </td>
-            <td>
-                @{
-                    int specCount = item.ZespolPracownik.Count;
-                    if (specCount > 0)
+<div class="card mb-4">
+
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Nazwa)
+                        </th>
+                        <th>
+                            Pracownicy
+                        </th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
                     {
-                        string firstSpec = item.ZespolPracownik.FirstOrDefault().Pracowniks.FullName;
-                        if (specCount > 1)
-                        {
-                            string specList = "";
-                            var c = item.ZespolPracownik.ToList();
-                            for (int i = 1; i < specCount; i++)
-                            {
-                                specList += c[i].Pracowniks.FullName + " <br />";
-                            }
-                            <a class="" role="button" data-toggle="collapse" href="#collapseSum@(item.ZespolId)" aria-expanded="false" aria-controls="collapseSum@(item.ZespolId)">
-                                @firstSpec    <span class="badge badge-success">@specCount</span>
-                            </a>
-                            <div class="collapse" id="collapseSum@(item.ZespolId)">
-                                <div class="well">
-                                    @Html.Raw(specList)
-                                </div>
-                            </div>
-                        }
-                        else
-                        {
-                            @firstSpec
-                        }
-                    }
-                }
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.ZespolId"><i class="fa fa-marker fa-lg"></i></a>
-                <a asp-action="Delete" asp-route-id="@item.ZespolId" class="text-danger ml-1" onclick="return confirm('Czt na pewno chcesz usunąć tą część?')"><i class="fa fa-trash-alt fa-lg"></i></a>
-                <!-- <a asp-action="Details" asp-route-id="@item.ZespolId">Details<i class="fa fa-info fa-lg" aria-hidden="true"></i></a>-->
-            </td>
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Nazwa)
+                            </td>
+                            <td>
+                                @{
+                                    int specCount = item.ZespolPracownik.Count;
+                                    if (specCount > 0)
+                                    {
+                                        string firstSpec = item.ZespolPracownik.FirstOrDefault().Pracowniks.FullName;
+                                        if (specCount > 1)
+                                        {
+                                            string specList = "";
+                                            var c = item.ZespolPracownik.ToList();
+                                            for (int i = 1; i < specCount; i++)
+                                            {
+                                                specList += c[i].Pracowniks.FullName + " <br />";
+                                            }
+                                            <a class="" role="button" data-toggle="collapse" href="#collapseSum@(item.ZespolId)" aria-expanded="false" aria-controls="collapseSum@(item.ZespolId)">
+                                                @firstSpec    <span class="badge badge-success">@specCount</span>
+                                            </a>
+                                            <div class="collapse" id="collapseSum@(item.ZespolId)">
+                                                <div class="well">
+                                                    @Html.Raw(specList)
+                                                </div>
+                                            </div>
+                                        }
+                                        else
+                                        {
+                                            @firstSpec
+                                        }
+                                    }
+                                }
+                            </td>
+                            <td>
+                                <a asp-action="Edit" asp-route-id="@item.ZespolId"><i class="fa fa-marker fa-lg"></i></a>
+                                <a asp-action="Delete" asp-route-id="@item.ZespolId" class="text-danger ml-1" onclick="return confirm('Czt na pewno chcesz usunąć tą część?')"><i class="fa fa-trash-alt fa-lg"></i></a>
+                                <!-- <a asp-action="Details" asp-route-id="@item.ZespolId">Details<i class="fa fa-info fa-lg" aria-hidden="true"></i></a>-->
+                            </td>
 
 
-        </tr>
-}
-    </tbody>
-</table>
+                        </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>

@@ -10,71 +10,80 @@
 <p>
     <a asp-action="Create" class="btn btn-outline-success"><i class="far fa-plus-square"></i>  Nowa maszyna</a>
 </p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Nazwa)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.NrSeryjny)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.DataPrzegladu)
-            </th>
-            <th>
-                Pracownicy
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Nazwa)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.NrSeryjny)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DataPrzegladu)
-            </td>
-            <td>
-                @{
-                    int specCount = item.PracownikMaszyna.Count;
-                    if (specCount > 0)
+<div class="card mb-4">
+
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered text-center" id="myTable" width="100%" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Nazwa)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.NrSeryjny)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.DataPrzegladu)
+                        </th>
+                        <th>
+                            Pracownicy
+                        </th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
                     {
-                        string firstSpec = item.PracownikMaszyna.FirstOrDefault().Pracowniks.FullName;
-                        if (specCount > 1)
-                        {
-                            string specList = "";
-                            var c = item.PracownikMaszyna.ToList();
-                            for (int i = 1; i < specCount; i++)
-                            {
-                                specList += c[i].Pracowniks.FullName + " <br />";
-                            }
-                            <a class="" role="button" data-toggle="collapse" href="#collapseSum@(item.MaszynaId)" aria-expanded="false" aria-controls="collapseSum@(item.MaszynaId)">
-                                @firstSpec    <span class="badge badge-success">@specCount</span>
-                            </a>
-                            <div class="collapse" id="collapseSum@(item.MaszynaId)">
-                                <div class="well">
-                                    @Html.Raw(specList)
-                                </div>
-                            </div>
-                        }
-                        else
-                        {
-                            @firstSpec
-                        }
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Nazwa)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.NrSeryjny)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.DataPrzegladu)
+                            </td>
+                            <td>
+                                @{
+                                    int specCount = item.PracownikMaszyna.Count;
+                                    if (specCount > 0)
+                                    {
+                                        string firstSpec = item.PracownikMaszyna.FirstOrDefault().Pracowniks.FullName;
+                                        if (specCount > 1)
+                                        {
+                                            string specList = "";
+                                            var c = item.PracownikMaszyna.ToList();
+                                            for (int i = 1; i < specCount; i++)
+                                            {
+                                                specList += c[i].Pracowniks.FullName + " <br />";
+                                            }
+                                            <a class="" role="button" data-toggle="collapse" href="#collapseSum@(item.MaszynaId)" aria-expanded="false" aria-controls="collapseSum@(item.MaszynaId)">
+                                                @firstSpec    <span class="badge badge-success">@specCount</span>
+                                            </a>
+                                            <div class="collapse" id="collapseSum@(item.MaszynaId)">
+                                                <div class="well">
+                                                    @Html.Raw(specList)
+                                                </div>
+                                            </div>
+                                        }
+                                        else
+                                        {
+                                            @firstSpec
+                                        }
+                                    }
+                                }
+                            </td>
+                            <td>
+                                <a asp-action="Edit" asp-route-id="@item.MaszynaId"><i class="fa fa-marker fa-lg"></i></a>
+                                <a asp-action="Delete" asp-route-id="@item.MaszynaId" class="text-danger ml-1" onclick="return confirm('Czt na pewno chcesz usunąć tą część?')"><i class="fa fa-trash-alt fa-lg"></i></a>
+
+                            </td>
+                        </tr>
                     }
-                }
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.MaszynaId"><i class="fa fa-marker fa-lg"></i></a>
-                <a asp-action="Delete" asp-route-id="@item.MaszynaId" class="text-danger ml-1" onclick="return confirm('Czt na pewno chcesz usunąć tą część?')"><i class="fa fa-trash-alt fa-lg"></i></a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

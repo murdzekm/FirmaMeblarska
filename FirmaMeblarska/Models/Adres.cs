@@ -38,6 +38,14 @@ namespace FirmaMeblarska.Models
                 NrLokalu = " ";
             }
         }
+        public string FullAdres
+        {
+            get
+            {
+                return Miejscowosc + " " + Ulica + " " + NrDomu + " " + NrLokalu + " " + KodPocztowy;
+            }
+        }
+
 
         public ICollection<Klient> Klient { get; set; }
         public ICollection<Zamowienie> Zamowienie { get; set; }

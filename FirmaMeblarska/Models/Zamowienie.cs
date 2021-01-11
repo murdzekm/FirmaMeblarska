@@ -50,9 +50,24 @@ namespace FirmaMeblarska.Models
         {
             DataZlozenia = DateTime.Now;
         }
+        public string CenaNetto
+        {
+            get
+            {
+                var wynik = Cena -((Cena * 23) / 100);
+                return wynik.ToString();
+            }
+        }
+        public string KwotaVat
+        {
+            get
+            {
+                var wynik = (Cena * 23) / 100;
+                return wynik.ToString();
+            }
+        }
 
-        
-        
+
         public Status Status { get; set; }
         public Klient Klient { get; set; }
 

@@ -11,28 +11,28 @@
     <a asp-action="AddOrEdit" class="btn btn-outline-success"><i class="far fa-plus-square"></i>  Nowy przedmiot</a>
 </p>
 <div class="card mb-4">
-    
+
     <div class="card-body">
         <div class="table-responsive">
-            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                
-                    <thead>
-                        <tr>
-                            <th>
-                                Akcje
-                            </th>
-                            <th>
-                                @Html.DisplayNameFor(model => model.Nazwa)
-                            </th>
-                            <th>
-                                @Html.DisplayNameFor(model => model.Ilosc)
-                            </th>
-                            
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var item in Model)
-                        {
+            <table class="table table-bordered text-center" id="myTable" width="100%" cellspacing="0">
+
+                <thead>
+                    <tr>
+                        <th>
+                            Akcje
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Nazwa)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Ilosc)
+                        </th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
                         <tr>
                             <td>
                                 <a asp-action="AddOrEdit" asp-route-id="@item.CzescId"><i class="fa fa-marker fa-lg"></i></a>
@@ -46,9 +46,11 @@
                             </td>
 
                         </tr>
-                        }
-                    </tbody>
-                </table>
+                    }
+                </tbody>
+            </table>
         </div>
     </div>
 </div>
+
+
