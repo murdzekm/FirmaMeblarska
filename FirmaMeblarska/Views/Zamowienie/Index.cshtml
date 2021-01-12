@@ -16,7 +16,7 @@
     
     <div class="card-body">
         <div class="table-responsive">
-            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+            <table class="table table-bordered text-center" id="myTable" width="100%" cellspacing="0">
                 <thead>
                     <tr>
                         <th>
@@ -43,32 +43,32 @@
                 <tbody>
                     @foreach (var item in Model)
                     {
-                    <tr>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.DataZlozenia)
-                        </td>
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.DataZlozenia)
+                            </td>
 
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Klients)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Adress)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Zespols)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Statuss)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Cena)
-                        </td>
-                        <td>
-                            <a asp-action="Edit" asp-route-id="@item.ZamowienieId"><i class="fa fa-marker fa-lg"></i></a>
-                            <a asp-action="Delete" asp-route-id="@item.ZamowienieId" class="text-danger ml-1" onclick="return confirm('Czt na pewno chcesz usunąć tą część?')"><i class="fa fa-trash-alt fa-lg"></i></a>
-                            <a asp-action="Details" asp-route-id="@item.ZamowienieId"><i class="fa fa-list"></i></a>
-                        </td>
-                    </tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Klient.FullName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Adres.FullAdres)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Zespol.Nazwa)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Status.Nazwa)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Cena) zł
+                            </td>
+                            <td>
+                                <a asp-action="Edit" asp-route-id="@item.ZamowienieId"><i class="fa fa-marker fa-lg"></i></a>
+                                <a asp-action="Delete" asp-route-id="@item.ZamowienieId" class="text-danger ml-1" onclick="return confirm('Czt na pewno chcesz usunąć tą część?')"><i class="fa fa-trash-alt fa-lg"></i></a>
+                                <a asp-action="Details" asp-route-id="@item.ZamowienieId"><i class="fa fa-list"></i></a>
+                            </td>
+                        </tr>
                     }
                 </tbody>
             </table>

@@ -23,7 +23,7 @@ namespace FirmaMeblarska.Controllers
 
         // GET: Zamowienie
         public async Task<IActionResult> Index()
-        {
+        {/*
             try
             {
                 //var pracList = _Db.Pracownik.ToList();
@@ -61,8 +61,18 @@ namespace FirmaMeblarska.Controllers
             {
                 return View(await _context.Zamowienie.ToListAsync());
 
-            }
+            }*/
            
+            
+            var zamowienie = _context.Zamowienie
+                   .Include(c => c.Klient)
+                   .Include(c => c.Status)
+                   .Include(c => c.Adres)
+                   .Include(c => c.Zespol);
+
+            return View(await zamowienie.ToListAsync());
+           
+
         }
 
         public async Task<IActionResult> Details(string id)
