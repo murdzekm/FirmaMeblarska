@@ -12,6 +12,11 @@
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
+                <label asp-for="NrFaktura" class="control-label"></label>
+                <input asp-for="NrFaktura" class="form-control" />
+                <span asp-validation-for="NrFaktura" class="text-danger"></span>
+            </div>
+            <div class="form-group">
                 <label asp-for="DataZlozenia" class="control-label"></label>
                 <input asp-for="DataZlozenia" class="form-control" />
                 <span asp-validation-for="DataZlozenia" class="text-danger"></span>

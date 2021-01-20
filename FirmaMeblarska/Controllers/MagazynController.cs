@@ -21,7 +21,7 @@ namespace FirmaMeblarska.Controllers
         }
 
         // GET: Magazyn
-        [Authorize(Roles = "Admin")]
+        [Authorize(Policy = "writepolicy")]
         [ActionName("Index")]
         public async Task<IActionResult> Index()
         {

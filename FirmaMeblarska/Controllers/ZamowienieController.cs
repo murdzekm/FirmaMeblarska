@@ -104,12 +104,14 @@ namespace FirmaMeblarska.Controllers
             var zamowienie = new Zamowienie();
             zamowienie.ZamowieniePlyta = new List<ZamowieniePlyta>();
             PopulateAssignedConditionData(zamowienie);
-            return View();
+            Zamowienie obj = new Zamowienie();
+            obj.DataZlozenia = DateTime.UtcNow.Date;
+            return View(obj);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ZamowienieId,DataZlozenia,Cena,StatusId,KlientId,ZespolId,AdresId")] Zamowienie zamowienie, string[] selectedConditions)
+        public async Task<IActionResult> Create([Bind("ZamowienieId,NrFaktura,DataZlozenia,Cena,StatusId,KlientId,ZespolId,AdresId")] Zamowienie zamowienie, string[] selectedConditions)
 
         {
             try
@@ -187,7 +189,7 @@ namespace FirmaMeblarska.Controllers
             UpdateZespolPracownik(selectedConditions, zamowienieToUpdate);
 
             if (await TryUpdateModelAsync<Zamowienie>(zamowienieToUpdate, "",
-                d => d.Cena, d => d.DataZlozenia, d => d.KlientId, d => d.AdresId, d => d.ZespolId, d => d.StatusId))
+                d => d.NrFaktura, d => d.Cena, d => d.DataZlozenia, d => d.KlientId, d => d.AdresId, d => d.ZespolId, d => d.StatusId))
             {
                 try
                 {
@@ -344,8 +346,8 @@ namespace FirmaMeblarska.Controllers
 
         public async Task<IActionResult> Delete(int? id)
         {
-            var czesc = await _context.Pracownik.FindAsync(id);
-            _context.Pracownik.Remove(czesc);
+            var czesc = await _context.Zamowienie.FindAsync(id);
+            _context.Zamowienie.Remove(czesc);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }

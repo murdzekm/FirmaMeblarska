@@ -40,3 +40,28 @@
         </div>
     </div>
 </div>
+@section Scripts {
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#myTable').DataTable({
+                "order": [[0, "asc"]],
+                "language": {
+                    "processing": "Przetwarzanie...",
+                    "search": "Szukaj:  ",
+                    "lengthMenu": "Pokaż _MENU_ pozycji",
+                    "info": "Pozycje od _START_ do _END_ z _TOTAL_",
+                    "infoEmpty": "Pozycji 0 z 0 dostępnych",
+                    "infoFiltered": "(filtrowanie spośród _MAX_ dostępnych pozycji)",
+                    "loadingRecords": "Wczytywanie...",
+                    "zeroRecords": "Nie znaleziono ",
+                    "paginate": {
+                        "first": "Pierwsza",
+                        "previous": "Poprzednia",
+                        "next": "Następna",
+                        "last": "Ostatnia"
+                    },
+                }
+            });
+        });
+    </script>
+}

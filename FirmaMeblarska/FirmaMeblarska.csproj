@@ -28,6 +28,10 @@
     <None Include="Views\ZamowieniePlyta\Index.cshtml" />
     <None Include="Views\Zamowienie\AddOrEdit.cshtml" />
     <None Include="Views\Zamowienie\Index.cshtml" />
+    <None Include="wwwroot\DataTables\datatables.css" />
+    <None Include="wwwroot\DataTables\datatables.js" />
+    <None Include="wwwroot\DataTables\datatables.min.css" />
+    <None Include="wwwroot\DataTables\datatables.min.js" />
     <None Include="wwwroot\js\site.js" />
     <None Include="wwwroot\lib\bootstrap\dist\css\bootstrap-grid.css.map" />
     <None Include="wwwroot\lib\bootstrap\dist\css\bootstrap-grid.min.css.map" />

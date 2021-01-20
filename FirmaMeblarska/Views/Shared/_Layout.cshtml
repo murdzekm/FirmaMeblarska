@@ -13,18 +13,13 @@
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" integrity="sha512-+4zCK9k+qNFUR5X+cKL9EIR+ZOhtIloNl9GIKS57V1MyNsYpYcUrUeQc9vNfzsWfV28IaLL3i96P9sdNyeRssA==" crossorigin="anonymous" />
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.1/css/all.css" integrity="sha384-vp86vTRFVJgpjF9jiIGPEEqYqlDwgyBgEF109VFjmqGmIY/Y4HV4d3Gp2irVfcrp" crossorigin="anonymous">
-    <link href="~/css/styles.css" rel="stylesheet" />
-    <!--<link href="https://cdn.datatables.net/1.10.20/css/dataTables.bootstrap4.min.css" rel="stylesheet" crossorigin="anonymous" />
-    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.23/css/jquery.dataTables.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/js/all.min.js" crossorigin="anonymous"></script>-->
+    <link href="~/css/styles.css" rel="stylesheet" />   
     <link rel="stylesheet" type="text/css" href="/DataTables/datatables.min.css" />
 
 </head>
 <body class="sb-nav-fixed">
     <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
 
-        <!-- <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">-->
-        <!--<nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">-->
         <a class="navbar-brand" asp-area="" asp-controller="Pracownik" asp-action="Index">Firma Meblarska</a>
         <button class="btn btn-link btn-sm order-1 order-lg-0 text-light" id="sidebarToggle" href="#"><i class="fas fa-bars"></i></button>
         <!-- Navbar-->
@@ -40,10 +35,21 @@
                 <div class="sb-sidenav-menu">
                     <div class="nav">
                         <div class="sb-sidenav-menu-heading">Ogólne</div>
-                        <a class="nav-link" asp-area="" asp-controller="Pracownik" asp-action="Index">
-                            <div class="sb-nav-link-icon"><i class="fas fa-user fa-fw"></i></div>Pracownicy
-                        </a>@if (User.IsInRole("Admin"))
+                        @if (User.IsInRole("Pracownik"))
                         {
+
+                            <a id="manage" class="nav-link" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">                            
+                                <div class="sb-nav-link-icon"><i class="fas fa-user-tie"></i></div>
+                                Ustawienia konta
+                            </a>
+                        }
+
+
+                        @if (User.IsInRole("Admin"))
+                        {
+                            <a class="nav-link" asp-area="" asp-controller="Pracownik" asp-action="Index">
+                                <div class="sb-nav-link-icon"><i class="fas fa-user fa-fw"></i></div>Pracownicy
+                            </a>
 
 
                             <a class="nav-link" asp-area="" asp-controller="Klient" asp-action="Index">
@@ -119,6 +125,10 @@
                                         Status
                                     </a>
 
+                                    <a class="nav-link" id="login" asp-area="Identity" asp-page="/Account/Register">
+                                        <div class="sb-nav-link-icon"><i class="fas fa-user-tie"></i></div>
+                                        Zarejestruj użytkownika
+                                    </a>
 
                                     <a class="nav-link" asp-area="" asp-controller="Role" asp-action="Index">
                                         <div class="sb-nav-link-icon"><i class="fas fa-box"></i></div>
@@ -152,15 +162,19 @@
 
 
 
+    <div class="container body-content">
+       
+        <hr />
+        <footer>
+            <p> &copy; 2020 - FirmaMeblarska - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a></p>
+        </footer>
+    </div>
+    <!--<footer class="border-top footer text-muted">
+         <div class="container">
+             &copy; 2020 - FirmaMeblarska - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+         </div>
+     </footer>-->
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2020 - FirmaMeblarska - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-        </div>
-    </footer>
-    <!--<script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>-->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
     <script src="~/js/scripts.js"></script>
@@ -168,11 +182,8 @@
     <script src="~/assets/demo/chart-area-demo.js"></script>
     <script src="~/assets/demo/chart-bar-demo.js"></script>
 
-    <script type="text/javascript" src="/DataTables/datatables.min.js"></script>
-    <!--<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.23/js/jquery.dataTables.js"></script>
-    <script src="https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js" crossorigin="anonymous"></script>
-        <script src="~/js/jquery.dataTables.min.js" crossorigin="anonymous"></script>
-    <script src="~/assets/demo/datatables-demo.js"></script>-->
+    <script type="text/javascript" src="~/DataTables/datatables.min.js"></script>
+    <!--
     <script type="text/javascript">
         $(document).ready(function () {
             $('#myTable').DataTable({
@@ -237,7 +248,7 @@
 
 
 
-    </script>
+    </script>-->
 
     @RenderSection("Scripts", required: false)
 </body>

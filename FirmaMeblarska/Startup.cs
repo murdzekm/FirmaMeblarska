@@ -46,7 +46,7 @@ namespace FirmaMeblarska
                 options.AddPolicy("readpolicy",
                     builder => builder.RequireRole("Admin", "Pracownik", "User"));
                 options.AddPolicy("writepolicy",
-                    builder => builder.RequireRole("Admin", "Manager"));
+                    builder => builder.RequireRole("Admin", "Pracownik"));
             });
         }
 

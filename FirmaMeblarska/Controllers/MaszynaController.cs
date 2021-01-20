@@ -28,7 +28,7 @@ namespace FirmaMeblarska.Controllers
                 .Include(d => d.PracownikMaszyna).ThenInclude(d => d.Pracowniks)
                          select d;
 
-            int pageSize = 3;//Change as required
+            int pageSize = 999999999;//Change as required
             var pagedData = await PaginatedList<Maszyna>.CreateAsync(zespol.AsNoTracking(), page ?? 1, pageSize);
 
             return View(pagedData);

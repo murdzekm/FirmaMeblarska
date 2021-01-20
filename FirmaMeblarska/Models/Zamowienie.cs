@@ -1,4 +1,5 @@
-﻿using System;
+﻿
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
@@ -8,10 +9,21 @@ using System.Threading.Tasks;
 
 namespace FirmaMeblarska.Models
 {
-    public class Zamowienie
+    public class Zamowienie 
     {
+        public Zamowienie()
+        {
+            this.DataZlozenia = DateTime.Now;
+            this.NrFaktura = DateTime.UtcNow.Date.Year.ToString() +
+                DateTime.UtcNow.Date.Month.ToString() +
+                DateTime.UtcNow.Date.Day.ToString() + Guid.NewGuid().ToString().Substring(0, 4).ToUpper();
+        }
+
         [Key]
         public int ZamowienieId { get; set; }
+        [Display(Name = "Numer faktury")]
+        [Required]
+        public string NrFaktura { get; set; }
 
         [Required(ErrorMessage = "Wymagane")]
         [DisplayName("Data złożenia")]
@@ -46,10 +58,7 @@ namespace FirmaMeblarska.Models
         public string Zespols { get; set; }
         [NotMapped]
         public string Adress { get; set; }
-        public Zamowienie()
-        {
-            DataZlozenia = DateTime.Now;
-        }
+        
         public string CenaNetto
         {
             get

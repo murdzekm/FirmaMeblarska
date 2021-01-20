@@ -4,14 +4,16 @@ using FirmaMeblarska.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace FirmaMeblarska.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210114180137_zespol")]
+    partial class zespol
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -246,24 +248,14 @@ namespace FirmaMeblarska.Data.Migrations
                     b.Property<DateTime>("DataZlozenia")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("HasChild")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<int>("KlientId")
                         .HasColumnType("int");
-
-                    b.Property<string>("NrFaktura")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("StatusId")
                         .HasColumnType("int");
 
                     b.Property<int>("ZespolId")
                         .HasColumnType("int");
-
-                    b.Property<DateTime>("createdAt")
-                        .HasColumnType("datetime2");
 
                     b.HasKey("ZamowienieId");
 

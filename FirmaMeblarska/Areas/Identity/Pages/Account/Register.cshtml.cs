@@ -71,7 +71,10 @@ namespace FirmaMeblarska.Areas.Identity.Pages.Account
             ViewData["roles"] = _roleManager.Roles.ToList();
             ReturnUrl = returnUrl;
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
+
+
         }
+      
 
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
