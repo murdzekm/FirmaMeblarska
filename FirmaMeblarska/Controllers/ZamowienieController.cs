@@ -23,46 +23,7 @@ namespace FirmaMeblarska.Controllers
 
         // GET: Zamowienie
         public async Task<IActionResult> Index()
-        {/*
-            try
-            {
-                //var pracList = _Db.Pracownik.ToList();
-
-                var pracList = from a in _context.Zamowienie
-                               join b in _context.Klient                                
-                               on a.KlientId equals b.KlientId
-                               join c in _context.Zespol
-                               on a.ZespolId equals c.ZespolId
-                               join d in _context.Status
-                               on a.StatusId equals d.StatusId
-                               join e in _context.Adres
-                               on a.AdresId equals e.AdresId
-                               into ZamoKli
-                               from e in ZamoKli.DefaultIfEmpty()
-
-                               select new Zamowienie
-                               {
-                                   ZamowienieId = a.ZamowienieId,
-                                   DataZlozenia = a.DataZlozenia,
-                                   Cena = a.Cena,
-                                   StatusId = a.StatusId,                                   
-                                   Statuss = d == null ? "" : d.Nazwa,                                   
-                                   KlientId = a.KlientId,
-                                   Klients = b == null ? "" : b.Imie + " " + b.Nazwisko,
-                                   ZespolId = a.ZespolId,
-                                   Zespols = c == null ? "" : c.Nazwa,
-                                   AdresId = a.AdresId,
-                                   Adress = e == null ? "" : e.Miejscowosc+ " " +e.Ulica + " " + e.NrDomu + " " + e.NrLokalu + " " + e.KodPocztowy
-                               };
-
-                return View(pracList);
-            }
-            catch (Exception)
-            {
-                return View(await _context.Zamowienie.ToListAsync());
-
-            }*/
-           
+        {
             
             var zamowienie = _context.Zamowienie
                    .Include(c => c.Klient)
@@ -126,9 +87,12 @@ namespace FirmaMeblarska.Controllers
                     }
                 }
 
+                var adress = _context.Klient.Where(m=>m.KlientId == zamowienie.KlientId).FirstOrDefault();
+                zamowienie.AdresId = adress.AdresId;
                 // UpdateZespolPracownik(selectedConditions, zespol);
                 if (ModelState.IsValid)
                 {
+                    
                     _context.Add(zamowienie);
                     await _context.SaveChangesAsync();
                     return RedirectToAction(nameof(Index));

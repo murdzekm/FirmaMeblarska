@@ -43,11 +43,7 @@
                 <span asp-validation-for="ZespolId" class="text-danger"></span>
             </div>
 
-            <div class="form-group">
-                <label asp-for="AdresId" class="control-label"></label>
-                @Html.DropDownListFor(model => model.AdresId, (SelectList)ViewBag.AdresList, "Wybierz adres", new { @class = "form-control" })
-                <span asp-validation-for="AdresId" class="text-danger"></span>
-            </div>
+           
             <div class="form-group">
                 <label class="control-label">Pracownicy</label>
                 <div class="col-md-offset-1">

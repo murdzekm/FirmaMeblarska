@@ -6,7 +6,7 @@
 <html>
 <head>
     <meta name="viewport" content="width=device-width" />
-    <title>Print Invoice</title>
+    <title>Faktura - '@Model.NrFaktura'</title>
 </head>
 <body onload="document.title = '@Model.NrFaktura'; window.print();">
     <div class="container-fluid">
@@ -67,8 +67,8 @@
             </div>
             <div class="col-md-4">
             </div>
-            <div class="col-md-4 mb-5">
-                <table class="table table-bordered">
+            <div class="col-md-4 mb-4">
+                <table class="table table-bordered float-left">
                     <thead class="bg-light">
                         <tr>
                             <th>Stawka VAT</th>

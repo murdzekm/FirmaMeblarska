@@ -30,7 +30,7 @@ namespace FirmaMeblarska.Models
         [Display(Name = "Adres")]
         public int AdresId { get; set; }
 
-        [NotMapped]
+       [NotMapped]
         public string Adres { get; set; }
 
         public string FullName
@@ -40,6 +40,7 @@ namespace FirmaMeblarska.Models
                 return Imie + " " + Nazwisko;
             }
         }
+       
 
         public string Dane
         {
