@@ -38,7 +38,7 @@
                         @if (User.IsInRole("Pracownik"))
                         {
 
-                            <a id="manage" class="nav-link" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">                            
+                            <a id="manage" class="nav-link" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">
                                 <div class="sb-nav-link-icon"><i class="fas fa-user-tie"></i></div>
                                 Ustawienia konta
                             </a>
@@ -69,31 +69,7 @@
                         @if (User.IsInRole("Admin"))
                         {
 
-                            <div class="sb-sidenav-menu-heading">Ilość</div>
-
-                            <a class="nav-link collapsed" asp-area="" asp-controller="Plyta" asp-action="Index" data-toggle="collapse" data-target="#collapsePages" aria-expanded="false" aria-controls="collapsePages">
-                                <div class="sb-nav-link-icon"><i class="fas fa-book-open"></i></div>
-                                Płyty
-                                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                            </a>
-                            <div class="collapse" id="collapsePages" aria-labelledby="headingTwo" data-parent="#sidenavAccordion">
-                                <nav class="sb-sidenav-menu-nested nav accordion" id="sidenavAccordionPages">
-                                    <a class="nav-link collapsed" asp-area="" asp-controller="Plyta" asp-action="Index">
-                                        Płyty
-                                        <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                                    </a>
-                                </nav>
-                            </div>
-                            <div class="collapse" id="collapsePages" aria-labelledby="headingTwo" data-parent="#sidenavAccordion">
-                                <nav class="sb-sidenav-menu-nested nav accordion" id="sidenavAccordionPages">
-                                    <a class="nav-link collapsed" asp-area="" asp-controller="Plyta" asp-action="AddOrEdit">
-
-                                        Dodaj płyte
-                                        <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                                    </a>
-                                </nav>
-                            </div>
-
+                           
                             <div class="sb-sidenav-menu-heading">Zmiana atrybutów</div>
                             <a class="nav-link" asp-area="" asp-controller="Adres" asp-action="Index">
                                 <div class="sb-nav-link-icon"><i class="fas fa-box"></i></div>
@@ -110,6 +86,11 @@
                                         <div class="sb-nav-link-icon"><i class="fas fa-box"></i></div>
                                         Zespoły
                                     </a>
+                                    <a class="nav-link" asp-area="" asp-controller="Plyta" asp-action="Index">
+                                        <div class="sb-nav-link-icon"><i class="fas fa-book-open"></i></div>
+                                        Płyty
+                                        
+                                    </a>
                                     <a class="nav-link" asp-area="" asp-controller="Maszyna" asp-action="Index">
                                         <div class="sb-nav-link-icon"><i class="fas fa-box"></i></div>
                                         Maszyny
@@ -120,23 +101,34 @@
                                         Narzędzia
                                     </a>
 
+
+
                                     <a class="nav-link" asp-area="" asp-controller="Status" asp-action="Index">
                                         <div class="sb-nav-link-icon"><i class="fas fa-box"></i></div>
                                         Status
                                     </a>
 
+
+                                </nav>
+                            </div>
+                            <a class="nav-link collapsed" data-toggle="collapse" data-target="#collapsePages" aria-expanded="false" aria-controls="collapsePages">
+                                <div class="sb-nav-link-icon"><i class="fas fa-book-open"></i></div>
+                                Administrator
+                                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                            </a>
+                            <div class="collapse" id="collapsePages" aria-labelledby="headingTwo" data-parent="#sidenavAccordion">
+                                <nav class="sb-sidenav-menu-nested nav accordion" id="sidenavAccordionPages">
                                     <a class="nav-link" id="login" asp-area="Identity" asp-page="/Account/Register">
                                         <div class="sb-nav-link-icon"><i class="fas fa-user-tie"></i></div>
                                         Zarejestruj użytkownika
                                     </a>
-
                                     <a class="nav-link" asp-area="" asp-controller="Role" asp-action="Index">
                                         <div class="sb-nav-link-icon"><i class="fas fa-box"></i></div>
                                         Role
                                     </a>
                                 </nav>
                             </div>
-
+                            
                         }
                     </div>
                 </div>

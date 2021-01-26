@@ -55,7 +55,7 @@
                                 @Html.DisplayFor(modelItem => item.Telefon)
                             </td>
                             <td>
-                                @Html.DisplayFor(modelItem => item.Adres)
+                                @Html.DisplayFor(modelItem => item.Adres.FullAdres)
                             </td>
                             <td>
                                 <a asp-action="AddOrEdit" asp-route-id="@item.KlientId"><i class="fa fa-marker fa-lg"></i></a>

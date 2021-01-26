@@ -367,7 +367,7 @@ namespace FirmaMeblarska.Controllers
                 var adress = _context.Adres
                         .Select(s => new
                         {
-                            Text = s.Miejscowosc + " " + s.Ulica + " " + s.NrDomu + " " +s.NrLokalu + " " +s.KodPocztowy,
+                            Text = s.FullAdres,
                             Value = s.AdresId
                         })
                         .ToList();

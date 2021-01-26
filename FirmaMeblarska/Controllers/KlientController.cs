@@ -23,38 +23,13 @@ namespace FirmaMeblarska.Controllers
         // GET: Klient
         public async Task<IActionResult> Index()
         {
-            try
-            {
-                //var pracList = _Db.Pracownik.ToList();
 
-                var pracList = from a in _context.Klient
-                               join b in _context.Adres
-                               on a.AdresId equals b.AdresId
-                               into Address
-                               from b in Address.DefaultIfEmpty()
+            var klient = _context.Klient
+                 .Include(c => c.Adres);
 
-                               select new Klient
-                               {
-                                   KlientId = a.KlientId,
-                                   Imie = a.Imie,
-                                   Nazwisko = a.Nazwisko,
-                                   Email = a.Email,
-                                   Telefon = a.Telefon,
-                                   AdresId = a.AdresId,
-                                   Adres = b == null ? " " : b.Miejscowosc + " " + b.Ulica + " " + b.NrDomu + " "+ b.NrLokalu +" " + b.KodPocztowy
-
-                               };
-
-                return View(pracList);
-            }
-            catch (Exception)
-            {
-                return View(await _context.Klient.ToListAsync());
-
-            }
-            //return View(await _context.Klient.ToListAsync());
+            return View(await klient.ToListAsync());
+           
         }
-
 
 
         // GET: Klient/Create
@@ -97,7 +72,7 @@ namespace FirmaMeblarska.Controllers
         }
 
         [HttpPost]
-        public ActionResult AddKlientAdres(/*[Bind("PracownikId,Imie,Nazwisko,Email,Telefon,AdresId,Miejscowosc,Ulica,NrDomu,NrLokalu,KodPocztowy")] */AdresKlientVW obj)
+        public ActionResult AddKlientAdres(AdresKlientVW obj)
         {
             try
             {
@@ -107,11 +82,19 @@ namespace FirmaMeblarska.Controllers
                 a.Ulica = obj.Ulica;
                 a.NrDomu = obj.NrDomu;
                 a.NrLokalu = obj.NrLokalu;
-                a.KodPocztowy = obj.KodPocztowy;                
-                _context.Adres.Add(a);
-                _context.SaveChanges();
-                
-                lastestAdrId = a.AdresId;
+                a.KodPocztowy = obj.KodPocztowy;
+                var adress = _context.Adres.Where(m => m.Miejscowosc == obj.Miejscowosc && m.Ulica == obj.Ulica && m.NrDomu == obj.NrDomu && m.NrLokalu == obj.NrLokalu).FirstOrDefault();
+
+                if (adress == null)
+                {
+                    lastestAdrId = a.AdresId;
+                    _context.Adres.Add(a);
+                    _context.SaveChanges();
+                }
+                else
+                {
+                    lastestAdrId = adress.AdresId;
+                }                
 
                 Klient p = new Klient();
                 p.Imie = obj.Imie;
@@ -122,8 +105,6 @@ namespace FirmaMeblarska.Controllers
 
                 _context.Klient.Add(p);
                 _context.SaveChanges();
-
-
             }
             catch (Exception ex)
             {
@@ -149,26 +130,19 @@ namespace FirmaMeblarska.Controllers
         {
             try
             {
-                List<Adres> addressList = new List<Adres>();
-                //addressList = _context.Adres.ToList();
-                // addressList.Insert(0, new Adres { AdresId = 0, Ulica = "Proszę wybrać" ,Miejscowosc = "" });
-
+                List<Adres> addressList = new List<Adres>();            
                 var adress = _context.Adres
                         .Select(s => new
                         {
-                            Text = s.Miejscowosc + " " + s.Ulica + " " + s.NrDomu + " " + s.NrLokalu + " " + s.KodPocztowy,
+                            Text = s.FullAdres,
                             Value = s.AdresId
                         })
                         .ToList();
 
                 ViewBag.AddressList = new SelectList(adress, "Value", "Text");
-
-                //ViewBag.AddressList = addressList;
-
             }
             catch (Exception ex)
             {
-
 
             }
         }

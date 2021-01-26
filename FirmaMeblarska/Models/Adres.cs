@@ -31,13 +31,13 @@ namespace FirmaMeblarska.Models
         [DisplayName("Kod pocztowy")]
         public string KodPocztowy { get; set; }
 
-        public Adres()
+        /*public Adres()
         {
             if(NrLokalu == null)
             {
                 NrLokalu = " ";
             }
-        }
+        }*/
         public string FullAdres
         {
             get

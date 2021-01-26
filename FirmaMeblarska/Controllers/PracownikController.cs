@@ -26,35 +26,11 @@ namespace FirmaMeblarska.Controllers
         [Authorize(Roles = "Admin")]        
         public async Task<IActionResult> Index()
         {
-            try
-            {
-                //var pracList = _Db.Pracownik.ToList();
+            var pracownik = _context.Pracownik
+                  .Include(c => c.Adres);
 
-                var pracList = from a in _context.Pracownik
-                               join b in _context.Adres
-                               on a.AdresId equals b.AdresId
-                               into Address
-                               from b in Address.DefaultIfEmpty()
-
-                               select new Pracownik
-                               {
-                                   PracownikId = a.PracownikId,
-                                   Imie = a.Imie,
-                                   Nazwisko = a.Nazwisko,
-                                   Email = a.Email,
-                                   Telefon = a.Telefon,
-                                   AdresId = a.AdresId,
-                                   Adress = b == null ? "" : b.Miejscowosc + " " + b.Ulica + " " + b.NrDomu + " " + b.KodPocztowy
-                               };
-
-                return View(pracList);
-            }
-            catch (Exception)
-            {
-                return View(await _context.Pracownik.ToListAsync());
-
-            }
-            // return View(await _context.Pracownik.ToListAsync());
+            return View(await pracownik.ToListAsync());
+           
         }
 
 
@@ -112,25 +88,23 @@ namespace FirmaMeblarska.Controllers
                 a.NrDomu = obj.NrDomu;
                 a.NrLokalu = obj.NrLokalu;
                 a.KodPocztowy = obj.KodPocztowy;
-                /* if(_context.Adres.Any(o => o.Miejscowosc == obj.Miejscowosc && o.Ulica == obj.Ulica)){
+                var adress = _context.Adres.Where(m => m.Miejscowosc == obj.Miejscowosc && m.Ulica == obj.Ulica && m.NrDomu == obj.NrDomu && m.NrLokalu == obj.NrLokalu).FirstOrDefault();
+                
+                 if(adress == null){
                      lastestAdrId = a.AdresId;
-                      _context.Adres.Update(a);
-                     _context.SaveChanges();
-
+                    _context.Adres.Add(a);
+                    _context.SaveChanges();
+                    
 
 
                  }
                  else
-                 {*/
-                if (obj.NrLokalu == null)
-                    a.NrLokalu = " ";
-                if (obj.Ulica == null)
-                    a.Ulica = " ";
-                _context.Adres.Add(a);
-                _context.SaveChanges();
-               // }
-                lastestAdrId = a.AdresId;
-
+                 {
+                    lastestAdrId = adress.AdresId;
+                    //_context.Adres.Update(a);
+                    //_context.SaveChanges();
+                  }
+               
                 Pracownik p = new Pracownik();
                 p.Imie = obj.Imie;
                 p.Nazwisko = obj.Nazwisko;
@@ -141,16 +115,16 @@ namespace FirmaMeblarska.Controllers
                 _context.Pracownik.Add(p);
                 _context.SaveChanges();
 
-
             }
             catch (Exception ex)
             {
 
                 ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists see your system administrator.");
             }
-            return View(obj);
+            return RedirectToAction(nameof(Index));
+            //return View(obj);
 
-         }
+        }
 
         public async Task<IActionResult> Edit(int? id)
         {
@@ -297,7 +271,7 @@ namespace FirmaMeblarska.Controllers
 
         }*/
 
-        private void PopulateDropDownLists(Pracownik pracownik = null)
+       /* private void PopulateDropDownLists(Pracownik pracownik = null)
         {
             ViewData["DoctorID"] = DoctorSelectList(pracownik?.AdresId);
         }
@@ -309,7 +283,7 @@ namespace FirmaMeblarska.Controllers
             return new SelectList(dQuery, "ID", "FormalName", id);
         }
 
-
+        */
         // GET: Pracownik/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
@@ -323,30 +297,22 @@ namespace FirmaMeblarska.Controllers
         {
             try
             {
-                List<Adres> addressList = new List<Adres>();
-                //addressList = _context.Adres.ToList();
-                // addressList.Insert(0, new Adres { AdresId = 0, Ulica = "Proszę wybrać" ,Miejscowosc = "" });
-
+                List<Adres> addressList = new List<Adres>();               
                 var adress = _context.Adres
                         .Select(s => new
                         {                         
-                            Text = s.Miejscowosc + " " + s.Ulica + " " + s.NrDomu+ " " + s.NrLokalu + " " + s.KodPocztowy,
+                            Text = s.FullAdres,
                             Value = s.AdresId
                         })
                         .ToList();
                 
                 ViewBag.AddressList = new SelectList(adress, "Value", "Text");
-
-                //ViewBag.AddressList = addressList;
-
             }
             catch (Exception ex)
             {
 
-
             }
         }
-
 
     }
 }

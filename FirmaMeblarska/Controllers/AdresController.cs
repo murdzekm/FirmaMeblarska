@@ -46,12 +46,7 @@ namespace FirmaMeblarska.Controllers
             if (ModelState.IsValid)
             {
                 if (adres.AdresId == 0)
-                {
-                    if (adres.NrLokalu == null)
-                       adres.NrLokalu = " ";
-                    if (adres.Ulica == null)
-                        adres.Ulica = " ";
-
+                {                   
                     _context.Add(adres);
                 }
                 else
@@ -60,8 +55,8 @@ namespace FirmaMeblarska.Controllers
                 }
                  await _context.SaveChangesAsync();
                
-                //return RedirectToAction(nameof(Index));
-                return Redirect(returnUrl);
+                return RedirectToAction(nameof(Index));
+                //return Redirect(returnUrl);
 
             }
             return View(adres);

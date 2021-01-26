@@ -22,6 +22,7 @@ namespace FirmaMeblarska.Areas.Identity.Pages.Account.Manage
             _signInManager = signInManager;
         }
 
+        [Display(Name = "Nazwa użytkownika")]
         public string Username { get; set; }
 
         [TempData]
@@ -33,7 +34,7 @@ namespace FirmaMeblarska.Areas.Identity.Pages.Account.Manage
         public class InputModel
         {
             [Phone]
-            [Display(Name = "Phone number")]
+            [Display(Name = "Numer telefonu")]
             public string PhoneNumber { get; set; }
         }
 

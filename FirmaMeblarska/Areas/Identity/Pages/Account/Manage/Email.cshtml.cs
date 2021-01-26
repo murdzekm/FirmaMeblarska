@@ -43,9 +43,9 @@ namespace FirmaMeblarska.Areas.Identity.Pages.Account.Manage
 
         public class InputModel
         {
-            [Required]
-            [EmailAddress]
-            [Display(Name = "New email")]
+            [Required(ErrorMessage = "Wymagane")]
+            [EmailAddress(ErrorMessage = "Nieoprawidłowy adres email")]
+            [Display(Name = "Nowy email")]
             public string NewEmail { get; set; }
         }
 
