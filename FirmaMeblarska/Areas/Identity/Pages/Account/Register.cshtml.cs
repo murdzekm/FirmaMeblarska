@@ -16,7 +16,8 @@ using Microsoft.Extensions.Logging;
 
 namespace FirmaMeblarska.Areas.Identity.Pages.Account
 {
-    [AllowAnonymous]
+    //[AllowAnonymous]
+    [Authorize(Roles = "Admin")]
     public class RegisterModel : PageModel
     {
         private readonly SignInManager<IdentityUser> _signInManager;
@@ -46,6 +47,7 @@ namespace FirmaMeblarska.Areas.Identity.Pages.Account
 
         public IList<AuthenticationScheme> ExternalLogins { get; set; }
 
+        
         public class InputModel
         {
             [Required(ErrorMessage = "Wymagane")]            

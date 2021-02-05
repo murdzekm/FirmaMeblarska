@@ -26,15 +26,19 @@ namespace FirmaMeblarska.ViewModels
 
         
         public int AdresId { get; set; }
+        [Required(ErrorMessage = "Wymagane")]
         [DisplayName("Miejscowość")]
         public string Miejscowosc { get; set; }
 
         public string Ulica { get; set; }
+        [Required(ErrorMessage = "Wymagane")]
         [DisplayName("Numer domu")]
         public string NrDomu { get; set; }
         [DisplayName("Numer lokalu")]
         public string NrLokalu { get; set; }
+        [Required(ErrorMessage = "Wymagane")]
         [DisplayName("Kod pocztowy")]
+
         public string KodPocztowy { get; set; }
     }
 }

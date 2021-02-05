@@ -11,11 +11,7 @@
 <body onload="document.title = '@Model.NrFaktura'; window.print();">
     <div class="container-fluid">
         <div class="row">
-
             <div class="col-md-12">
-
-
-
                 <h3 class="mb-5">
                     Faktura nr: @Model.NrFaktura
                 </h3>
@@ -25,7 +21,11 @@
                 </div>
                 <span class="border-bottom border-dark "> <b>Nabywca:</b></span>
                 <address>
-                    <strong>@Model.Klient.FullName</strong><br /><span>@Model.Klient.FullName</span><br /><span>@Model.Adres.FullAdres</span><br /><span>email: @Model.Klient.Email</span><br /><span>tel:@Model.Klient.Telefon</span>
+                    <strong>@Model.Klient.FullName</strong><br />
+                    <span>@Model.Klient.FullName</span><br />
+                    <span>@Model.Adres.FullAdres</span><br />
+                    <span>email: @Model.Klient.Email</span><br />
+                    <span>tel:@Model.Klient.Telefon</span>
                 </address>
                 <span class="border-bottom border-dark"> <b>Sprzedwaca:</b></span>
                 <address>

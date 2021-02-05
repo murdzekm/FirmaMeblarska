@@ -29,7 +29,7 @@ namespace FirmaMeblarska.Controllers
                          select d;
 
             int pageSize = 999999999;//Change as required
-            var pagedData = await PaginatedList<Maszyna>.CreateAsync(zespol.AsNoTracking(), page ?? 1, pageSize);
+            var pagedData = await ViewList<Maszyna>.CreateAsync(zespol.AsNoTracking(), page ?? 1, pageSize);
 
             return View(pagedData);
             //return View(await _context.Maszyna.ToListAsync());

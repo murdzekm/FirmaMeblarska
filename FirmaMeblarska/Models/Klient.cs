@@ -20,7 +20,9 @@ namespace FirmaMeblarska.Models
         public string Nazwisko { get; set; }
 
         [Required(ErrorMessage = "Wymagane")]
+       
         [DataType(DataType.EmailAddress)]
+        [EmailAddress(ErrorMessage = "Nieoprawidłowy adres email")]
         public string Email { get; set; }
 
         [Required(ErrorMessage = "Wymagane")]

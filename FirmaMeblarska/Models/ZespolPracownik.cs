@@ -9,12 +9,8 @@ namespace FirmaMeblarska.Models
 {
     public class ZespolPracownik
     {
-        public int ZespolId { get; set; }
-        
-        public int PracownikId { get; set; }    
-
-        
-
+        public int ZespolId { get; set; }        
+        public int PracownikId { get; set; } 
         public  Zespol Zespols { get; set; }
         public  Pracownik Pracowniks { get; set; }
     }

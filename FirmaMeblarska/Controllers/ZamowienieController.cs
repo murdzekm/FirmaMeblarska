@@ -9,6 +9,7 @@ using FirmaMeblarska.Models;
 using FirmaMeblarska.Data;
 using FirmaMeblarska.ViewModels;
 using Microsoft.EntityFrameworkCore.Storage;
+using Microsoft.AspNetCore.Authorization;
 
 namespace FirmaMeblarska.Controllers
 {
@@ -22,9 +23,10 @@ namespace FirmaMeblarska.Controllers
         }
 
         // GET: Zamowienie
+        [Authorize(Policy = "writepolicy")]
         public async Task<IActionResult> Index()
         {
-            
+
             var zamowienie = _context.Zamowienie
                    .Include(c => c.Klient)
                    .Include(c => c.Status)
@@ -32,7 +34,7 @@ namespace FirmaMeblarska.Controllers
                    .Include(c => c.Zespol);
 
             return View(await zamowienie.ToListAsync());
-           
+
 
         }
 
@@ -47,7 +49,7 @@ namespace FirmaMeblarska.Controllers
                     .Include(c => c.Klient)
                     .Include(c => c.Status)
                     .Include(c => c.Adres)
-                    .Include(c => c.Zespol)                    
+                    .Include(c => c.Zespol)
                     .SingleOrDefaultAsync(m => m.ZamowienieId.ToString() == id);
             if (zamowienie == null)
             {
@@ -57,14 +59,14 @@ namespace FirmaMeblarska.Controllers
             return View(zamowienie);
         }
 
-
+        [Authorize(Roles = "Admin")]
         public IActionResult Create()
         {
             loadDDL();
 
             var zamowienie = new Zamowienie();
             zamowienie.ZamowieniePlyta = new List<ZamowieniePlyta>();
-            PopulateAssignedConditionData(zamowienie);
+            ListaPlyt(zamowienie);
             Zamowienie obj = new Zamowienie();
             obj.DataZlozenia = DateTime.UtcNow.Date;
             return View(obj);
@@ -72,15 +74,15 @@ namespace FirmaMeblarska.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ZamowienieId,NrFaktura,DataZlozenia,Cena,StatusId,KlientId,ZespolId,AdresId")] Zamowienie zamowienie, string[] selectedConditions)
+        public async Task<IActionResult> Create([Bind("ZamowienieId,NrFaktura,DataZlozenia,Cena,StatusId,KlientId,ZespolId,AdresId")] Zamowienie zamowienie, string[] selectedplyty)
 
         {
             try
             {
-                if (selectedConditions != null)
+                if (selectedplyty != null)
                 {
                     zamowienie.ZamowieniePlyta = new List<ZamowieniePlyta>();
-                    foreach (var cond in selectedConditions)
+                    foreach (var cond in selectedplyty)
                     {
                         var condToAdd = new ZamowieniePlyta { ZamowienieId = zamowienie.ZamowienieId, PlytaId = int.Parse(cond) };
                         zamowienie.ZamowieniePlyta.Add(condToAdd);
@@ -88,11 +90,9 @@ namespace FirmaMeblarska.Controllers
                 }
 
                 var adress = _context.Klient.Where(m=>m.KlientId == zamowienie.KlientId).FirstOrDefault();
-                zamowienie.AdresId = adress.AdresId;
-                // UpdateZespolPracownik(selectedConditions, zespol);
+                zamowienie.AdresId = adress.AdresId;               
                 if (ModelState.IsValid)
-                {
-                    
+                {                    
                     _context.Add(zamowienie);
                     await _context.SaveChangesAsync();
                     return RedirectToAction(nameof(Index));
@@ -100,16 +100,14 @@ namespace FirmaMeblarska.Controllers
             }
             catch (Exception)
             {
-                ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists see your system administrator.");
+                ModelState.AddModelError("", "Dane nie zostały dodane.");
             }
-
-            PopulateAssignedConditionData(zamowienie);
+            ListaPlyt(zamowienie);
             return View(zamowienie);
-
-
         }
 
         // GET: Zespol/Edit/5
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Edit(int? id)
         {
             loadDDL();
@@ -117,41 +115,31 @@ namespace FirmaMeblarska.Controllers
             {
                 return NotFound();
             }
-
             var zamowienie = await _context.Zamowienie
                 .Include(p => p.ZamowieniePlyta).ThenInclude(p => p.Plyta)
                 .AsNoTracking()
                 .SingleOrDefaultAsync(p => p.ZamowienieId == id);
-            //.FindAsync(id);
             if (zamowienie == null)
             {
                 return NotFound();
             }
-            PopulateAssignedConditionData(zamowienie);
+            ListaPlyt(zamowienie);
             return View(zamowienie);
         }
-
-        // POST: Zespol/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        // POST: Zespol/Edit/5        
         [HttpPost]
         [ValidateAntiForgeryToken]        
-        public async Task<IActionResult> Edit(int id, string[] selectedConditions)
+        public async Task<IActionResult> Edit(int id, string[] selectedplyty)
         {
-
             var zamowienieToUpdate = await _context.Zamowienie
                 .Include(d => d.ZamowieniePlyta).ThenInclude(d => d.Plyta)
-                .SingleOrDefaultAsync(d => d.ZamowienieId == id);
-            //Check that you got it or exit with a not found error
-
-
+                .SingleOrDefaultAsync(d => d.ZamowienieId == id);          
             if (zamowienieToUpdate == null)
             {
                 return NotFound();
             }
 
-            UpdateZespolPracownik(selectedConditions, zamowienieToUpdate);
-
+            UpdateZespolPracownik(selectedplyty, zamowienieToUpdate);
             if (await TryUpdateModelAsync<Zamowienie>(zamowienieToUpdate, "",
                 d => d.NrFaktura, d => d.Cena, d => d.DataZlozenia, d => d.KlientId, d => d.AdresId, d => d.ZespolId, d => d.StatusId))
             {
@@ -162,7 +150,7 @@ namespace FirmaMeblarska.Controllers
                 }
                 catch (RetryLimitExceededException /* dex */)
                 {
-                    ModelState.AddModelError("", "Unable to save changes after multiple attempts. Try again, and if the problem persists, see your system administrator.");
+                    ModelState.AddModelError("", "Dane nie zostały zaaktualizowane.");
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -177,48 +165,47 @@ namespace FirmaMeblarska.Controllers
                 }
                 catch (DbUpdateException)
                 {
-                    ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists see your system administrator.");
+                    ModelState.AddModelError("", "Dane nie zostały zaaktualizowane.");
                 }
 
             }
-
-            PopulateAssignedConditionData(zamowienieToUpdate);
+            ListaPlyt(zamowienieToUpdate);
             return View(zamowienieToUpdate);
 
         }
 
 
-        private void PopulateAssignedConditionData(Zamowienie zamowienie)
+        private void ListaPlyt(Zamowienie zamowienie)
         {
-            var allConditions = _context.Plyta;
-            var pConditions = new HashSet<int>(zamowienie.ZamowieniePlyta.Select(b => b.PlytaId));
+            var allplyty = _context.Plyta;
+            var pplyty = new HashSet<int>(zamowienie.ZamowieniePlyta.Select(b => b.PlytaId));
             var viewModel = new List<PlytaVW>();
-            foreach (var con in allConditions)
+            foreach (var con in allplyty)
             {
                 viewModel.Add(new PlytaVW
                 {
                     PlytaId = con.PlytaId,
                     Nazwa = con.Kod,
-                    Assigned = pConditions.Contains(con.PlytaId)
+                    Assigned = pplyty.Contains(con.PlytaId)
                 });
             }
-            ViewData["Conditions"] = viewModel;
+            ViewData["Plyty"] = viewModel;
         }
-        private void UpdateZespolPracownik(string[] selectedConditions, Zamowienie zamowienieToUpdate)
+        private void UpdateZespolPracownik(string[] selectedPlyty, Zamowienie zamowienieToUpdate)
         {
-            if (selectedConditions == null)
+            if (selectedPlyty == null)
             {
                 zamowienieToUpdate.ZamowieniePlyta = new List<ZamowieniePlyta>();
                 return;
             }
 
-            var selectedOptionsHS = new HashSet<string>(selectedConditions);
-            var docSpecialties = new HashSet<int>(zamowienieToUpdate.ZamowieniePlyta.Select(b => b.PlytaId));
+            var selectedOptionsHS = new HashSet<string>(selectedPlyty);
+            var zamPlyta = new HashSet<int>(zamowienieToUpdate.ZamowieniePlyta.Select(b => b.PlytaId));
             foreach (var s in _context.Plyta)
             {
                 if (selectedOptionsHS.Contains(s.PlytaId.ToString()))
                 {
-                    if (!docSpecialties.Contains(s.PlytaId))
+                    if (!zamPlyta.Contains(s.PlytaId))
                     {
                         zamowienieToUpdate.ZamowieniePlyta.Add(new ZamowieniePlyta
                         {
@@ -229,10 +216,10 @@ namespace FirmaMeblarska.Controllers
                 }
                 else
                 {
-                    if (docSpecialties.Contains(s.PlytaId))
+                    if (zamPlyta.Contains(s.PlytaId))
                     {
-                        ZamowieniePlyta specToRemove = zamowienieToUpdate.ZamowieniePlyta.SingleOrDefault(d => d.PlytaId == s.PlytaId);
-                        _context.Remove(specToRemove);
+                        ZamowieniePlyta plytaToRemove = zamowienieToUpdate.ZamowieniePlyta.SingleOrDefault(d => d.PlytaId == s.PlytaId);
+                        _context.Remove(plytaToRemove);
                     }
                 }
             }
@@ -307,23 +294,28 @@ namespace FirmaMeblarska.Controllers
 
 
         // GET: Zamowienie/Delete/5
-
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(int? id)
         {
-            var czesc = await _context.Zamowienie.FindAsync(id);
-            _context.Zamowienie.Remove(czesc);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            try
+            {   
+                var czesc = await _context.Zamowienie.FindAsync(id);
+                _context.Zamowienie.Remove(czesc);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+            catch (Exception /* dex */)
+            {
+                ModelState.AddModelError("", "Dane nie zostały usunięte.");
+                return RedirectToAction(nameof(Index));
+            }
         }
 
         private void loadDDL()
         {
             try
             {
-                List<Klient> klientList = new List<Klient>();
-                //addressList = _context.Adres.ToList();
-                // addressList.Insert(0, new Adres { AdresId = 0, Ulica = "Proszę wybrać" ,Miejscowosc = "" });
-
+                List<Klient> klientList = new List<Klient>();                
                 var klients = _context.Klient
                         .Select(s => new
                         {
@@ -331,12 +323,9 @@ namespace FirmaMeblarska.Controllers
                             Value = s.KlientId
                         })
                         .ToList();
-
                 ViewBag.KlientList = new SelectList(klients, "Value", "Text");
 
-                List<Status> StatusList = new List<Status>();
-                
-
+                List<Status> StatusList = new List<Status>();            
                 var statuss = _context.Status
                         .Select(s => new
                         {
@@ -349,8 +338,6 @@ namespace FirmaMeblarska.Controllers
 
 
                 List<Zespol> ZespolList = new List<Zespol>();
-
-
                 var zespols = _context.Zespol
                         .Select(s => new
                         {
@@ -358,12 +345,9 @@ namespace FirmaMeblarska.Controllers
                             Value = s.ZespolId
                         })
                         .ToList();
-
                 ViewBag.ZespolList = new SelectList(zespols, "Value", "Text");
 
                 List<Adres> AdresList = new List<Adres>();
-
-
                 var adress = _context.Adres
                         .Select(s => new
                         {
@@ -371,16 +355,12 @@ namespace FirmaMeblarska.Controllers
                             Value = s.AdresId
                         })
                         .ToList();
-
                 ViewBag.AdresList = new SelectList(adress, "Value", "Text");
-
             }
             catch (Exception ex)
             {
 
-
             }
         }
-
     }
 }

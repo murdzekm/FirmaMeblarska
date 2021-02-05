@@ -45,20 +45,7 @@ namespace FirmaMeblarska.Models
 
         [Required(ErrorMessage = "Wymagane")]
         [Display(Name = "Zespół")]
-        public int ZespolId { get; set; }
-
-        
-
-        [NotMapped]
-        public string Statuss { get; set; }
-        [NotMapped]
-        public string Klients { get; set; }
-        [NotMapped]
-        [Display(Name = "Zespół")]
-        public string Zespols { get; set; }
-        [NotMapped]
-        public string Adress { get; set; }
-        
+        public int ZespolId { get; set; }     
         public string CenaNetto
         {
             get
@@ -75,11 +62,8 @@ namespace FirmaMeblarska.Models
                 return wynik.ToString();
             }
         }
-
-
         public Status Status { get; set; }
         public Klient Klient { get; set; }
-
         public Adres Adres { get; set; }
         public Zespol Zespol { get; set; }
         public IList<ZamowieniePlyta> ZamowieniePlyta { get; set; }

@@ -69,7 +69,7 @@ namespace FirmaMeblarska.Controllers
             }
             return View(pracownik);
         }
-
+        [Authorize(Roles = "Admin")]
         [HttpGet]
         public ActionResult AddPracownikAdres()
         {
@@ -125,7 +125,7 @@ namespace FirmaMeblarska.Controllers
             //return View(obj);
 
         }
-
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -271,20 +271,21 @@ namespace FirmaMeblarska.Controllers
 
         }*/
 
-       /* private void PopulateDropDownLists(Pracownik pracownik = null)
-        {
-            ViewData["DoctorID"] = DoctorSelectList(pracownik?.AdresId);
-        }
-        private SelectList DoctorSelectList(int? id)
-        {
-            var dQuery = from d in _context.Adres
-                         orderby d.Miejscowosc, d.Ulica, d.NrDomu, d.KodPocztowy
-                         select d;
-            return new SelectList(dQuery, "ID", "FormalName", id);
-        }
+        /* private void PopulateDropDownLists(Pracownik pracownik = null)
+         {
+             ViewData["DoctorID"] = DoctorSelectList(pracownik?.AdresId);
+         }
+         private SelectList DoctorSelectList(int? id)
+         {
+             var dQuery = from d in _context.Adres
+                          orderby d.Miejscowosc, d.Ulica, d.NrDomu, d.KodPocztowy
+                          select d;
+             return new SelectList(dQuery, "ID", "FormalName", id);
+         }
 
-        */
+         */
         // GET: Pracownik/Delete/5
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(int? id)
         {
             var czesc = await _context.Pracownik.FindAsync(id);

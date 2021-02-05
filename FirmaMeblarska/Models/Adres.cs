@@ -30,14 +30,6 @@ namespace FirmaMeblarska.Models
         [Column(TypeName = "nvarchar(6)")]
         [DisplayName("Kod pocztowy")]
         public string KodPocztowy { get; set; }
-
-        /*public Adres()
-        {
-            if(NrLokalu == null)
-            {
-                NrLokalu = " ";
-            }
-        }*/
         public string FullAdres
         {
             get
@@ -45,8 +37,6 @@ namespace FirmaMeblarska.Models
                 return Miejscowosc + " " + Ulica + " " + NrDomu + " " + NrLokalu + " " + KodPocztowy;
             }
         }
-
-
         public ICollection<Klient> Klient { get; set; }
         public ICollection<Zamowienie> Zamowienie { get; set; }
         public ICollection<Pracownik> Pracownik { get; set; }

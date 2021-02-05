@@ -66,10 +66,19 @@ namespace FirmaMeblarska.Controllers
         // GET: Adres/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
+            try { 
             var czesc = await _context.Adres.FindAsync(id);
             _context.Adres.Remove(czesc);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
+            }
+            catch (Exception /* dex */)
+            {
+                ModelState.AddModelError("", "Dane nie zostały usunięte.");
+                return RedirectToAction(nameof(Index));
+            }
+
+
         }
 
     }

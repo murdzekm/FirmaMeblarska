@@ -15,11 +15,7 @@ namespace FirmaMeblarska.Models
 
         [Required(ErrorMessage = "Wymagane")]
         [Column(TypeName = "nvarchar(20)")]
-        public string Nazwa { get; set; }
-
-        //public IList<ZespolPracownik> ZespolPracownik { get; set; }
-
-        
+        public string Nazwa { get; set; }   
         public ICollection<ZespolPracownik> ZespolPracownik { get; set; }
 
     }

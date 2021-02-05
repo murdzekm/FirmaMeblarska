@@ -28,18 +28,13 @@ namespace FirmaMeblarska.Models
         [Required(ErrorMessage = "Wymagane")]
         [Display(Name = "Adres")]
         public int AdresId { get; set; }
-
         public string FullName
         {
             get
             {
                 return  Imie +" "+ Nazwisko;
             }
-        }
-
-        [NotMapped]
-        public string Adress { get; set; }
-
+        }      
         public Adres Adres { get; set; }
         public ICollection<ZespolPracownik> ZespolPracownik { get; set; }
         public ICollection<PracownikMaszyna> PracownikMaszyna { get; set; }

@@ -70,7 +70,7 @@
                         <tr>
                             @{
                                 int cnt = 0;
-                                List<FirmaMeblarska.ViewModels.PlytaVW> conds = ViewBag.Conditions;
+                                List<FirmaMeblarska.ViewModels.PlytaVW> conds = ViewBag.Plyty;
                                 foreach (var cond in conds)
                                 {
                                     if (cnt++ % 6 == 0)
@@ -79,7 +79,7 @@
                                     }
                                     @:<td>
                                         <input type="checkbox"
-                                               name="selectedConditions"
+                                               name="selectedPlyty"
                                                value="@cond.PlytaId"
                                                @(Html.Raw(cond.Assigned ? "checked=\"checked\"" : "")) />
                                         @cond.Nazwa @:&nbsp;&nbsp;

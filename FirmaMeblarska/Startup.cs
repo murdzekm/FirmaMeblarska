@@ -74,11 +74,13 @@ namespace FirmaMeblarska
             app.UseAuthentication();
             app.UseAuthorization();
 
-            app.UseEndpoints(endpoints =>
+
+           
+                app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Pracownik}/{action=Index}/{id?}");
+                    pattern: "{controller=Zamowienie}/{action=Index}/{id?}");
                 endpoints.MapRazorPages();
             });
         }
