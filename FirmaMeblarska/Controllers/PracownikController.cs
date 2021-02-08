@@ -196,103 +196,29 @@ namespace FirmaMeblarska.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            //ViewData["PlytaId"] = new SelectList(_context.Plyta, "PlytaId", "Kod", zamowieniePlyta.PlytaId);
-            //ViewData["ZamowienieId"] = new SelectList(_context.Zamowienie, "ZamowienieId", "ZamowienieId", zamowieniePlyta.ZamowienieId);
+            
             return View(obj);
         }
 
-
-        /*
-        public async Task<IActionResult> Edit(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var prac = await _context.Pracownik
-                .Include(p => p.Adres)
-                .AsNoTracking()
-                .SingleOrDefaultAsync(p => p.PracownikId == id);
-            
-            //.FindAsync(id);
-            if (prac == null)
-            {
-                return NotFound();
-            }
-            
-            return View(prac);
-        }
-
-        // POST: Zespol/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        //public async Task<IActionResult> Edit(int id, [Bind("ZespolId,Nazwa")] Zespol zespol,string[] selectedConditions)
-        public async Task<IActionResult> Edit(int id, string[] selectedConditions)
-        {
-            var pracToUpdate = await _context.Pracownik
-               .Include(p => p.Adres)               
-               .SingleOrDefaultAsync(p => p.PracownikId == id);          
-           
-
-
-            if (pracToUpdate == null)
-            {
-                return NotFound();
-            }
-
-            //UpdateZespolPracownik(selectedConditions, pracToUpdate);
-
-            if (await TryUpdateModelAsync<Pracownik>(pracToUpdate, "",
-                p => p.Imie, p => p.Nazwisko, p => p.Email, p => p.Telefon, p => p.AdresId))
-            {
-                try
-                {
-                    await _context.SaveChangesAsync();
-                    return RedirectToAction(nameof(Index));
-                }
-                catch (RetryLimitExceededException /* dex *//*)
-                {
-                    ModelState.AddModelError("", "Unable to save changes after multiple attempts. Try again, and if the problem persists, see your system administrator.");
-                }
-                                
-                catch (DbUpdateException)
-                {
-                    ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists see your system administrator.");
-                }
-
-            }
-
-            //PopulateAssignedConditionData(zespolToUpdate);
-            PopulateDropDownLists(pracToUpdate);
-            return View(pracToUpdate);
-
-        }*/
-
-        /* private void PopulateDropDownLists(Pracownik pracownik = null)
-         {
-             ViewData["DoctorID"] = DoctorSelectList(pracownik?.AdresId);
-         }
-         private SelectList DoctorSelectList(int? id)
-         {
-             var dQuery = from d in _context.Adres
-                          orderby d.Miejscowosc, d.Ulica, d.NrDomu, d.KodPocztowy
-                          select d;
-             return new SelectList(dQuery, "ID", "FormalName", id);
-         }
-
-         */
+       
         // GET: Pracownik/Delete/5
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(int? id)
         {
-            var czesc = await _context.Pracownik.FindAsync(id);
+            try
+            {
+                var czesc = await _context.Pracownik.FindAsync(id);
             _context.Pracownik.Remove(czesc);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
+            catch (Exception /* dex */)
+            {
+                ModelState.AddModelError("", "Dane nie zostały usunięte.");
+                TempData["SuccessMessage"] = "Dane nie zostały usunięte, powieważ są powiązane z innym obiektem!";
+                return RedirectToAction(nameof(Index));
+    }
+}
 
         private void loadDDL()
         {

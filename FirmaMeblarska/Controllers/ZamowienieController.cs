@@ -307,6 +307,7 @@ namespace FirmaMeblarska.Controllers
             catch (Exception /* dex */)
             {
                 ModelState.AddModelError("", "Dane nie zostały usunięte.");
+                TempData["SuccessMessage"] = "Dane nie zostały usunięte, powieważ są powiązane z innym obiektem!";
                 return RedirectToAction(nameof(Index));
             }
         }

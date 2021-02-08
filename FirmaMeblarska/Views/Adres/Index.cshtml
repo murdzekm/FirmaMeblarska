@@ -5,14 +5,21 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-danger alert-dismissable">
+        <strong>@TempData["SuccessMessage"]</strong>
+    </div>
+}
 <h1>Adresy</h1>
+
 
 <p>
     <a asp-action="AddOrEdit" class="btn btn-outline-success"><i class="far fa-plus-square"></i>  Nowy adres</a>
 </p>
 <div class="card mb-4">
 
-    <div class="card-body">
+    <div class="card-body shadow-lg">
         <div class="table-responsive">
             <table class="table table-bordered text-center" id="myTable" width="100%" cellspacing="0">
 

@@ -10,6 +10,7 @@ using FirmaMeblarska.Models;
 using FirmaMeblarska.ViewModels;
 using Microsoft.EntityFrameworkCore.Storage;
 using FirmaMeblarska.Utilities;
+using Microsoft.AspNetCore.Authorization;
 
 namespace FirmaMeblarska.Controllers
 {
@@ -23,6 +24,7 @@ namespace FirmaMeblarska.Controllers
         }
 
         // GET: Zespol
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Index(int? page)
         {
             var zespol = from d in _context.Zespol
@@ -35,10 +37,11 @@ namespace FirmaMeblarska.Controllers
             return View(pagedData);           
         }
 
-        
-        
+
+
 
         // GET: Zespol/Create
+        [Authorize(Roles = "Admin")]
         public IActionResult Create()
         {
             var zespol = new Zespol();
@@ -86,6 +89,7 @@ namespace FirmaMeblarska.Controllers
         }
 
         // GET: Zespol/Edit/5
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -164,32 +168,41 @@ namespace FirmaMeblarska.Controllers
     }
 
         // GET: Zespol/Delete/5
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
+        /*  public async Task<IActionResult> Delete(int? id)
+          {
+              if (id == null)
+              {
+                  return NotFound();
+              }
 
-            var zespol = await _context.Zespol
-                .FirstOrDefaultAsync(m => m.ZespolId == id);
-            if (zespol == null)
-            {
-                return NotFound();
-            }
+              var zespol = await _context.Zespol
+                  .FirstOrDefaultAsync(m => m.ZespolId == id);
+              if (zespol == null)
+              {
+                  return NotFound();
+              }
 
-            return View(zespol);
-        }
+              return View(zespol);
+          }*/
 
         // POST: Zespol/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> Delete(int? id)
         {
+            try
+            {
+                           
             var zespol = await _context.Zespol.FindAsync(id);
             _context.Zespol.Remove(zespol);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
+            }
+            catch (Exception /* dex */)
+            {
+                ModelState.AddModelError("", "Dane nie zostały usunięte.");
+                TempData["SuccessMessage"] = "Dane nie zostały usunięte, powieważ są powiązane z innym obiektem!";
+                return RedirectToAction(nameof(Index));
+            }
         }
 
         private bool ZespolExists(int id)

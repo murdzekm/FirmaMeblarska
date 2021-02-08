@@ -4,7 +4,12 @@
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-danger alert-dismissable">
+        <strong>@TempData["SuccessMessage"]</strong>
+    </div>
+}
 <h1>Klient</h1>
 <!--
 <p>
@@ -15,7 +20,7 @@
 </p>
 <div class="card mb-4">
 
-    <div class="card-body">
+    <div class="card-body shadow-lg">
         <div class="table-responsive">
             <table class="table table-bordered text-center" id="myTable" width="100%" cellspacing="0">
                 <thead>

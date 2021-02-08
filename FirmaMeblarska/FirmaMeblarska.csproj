@@ -21,11 +21,6 @@
   <ItemGroup>
     <None Include="Views\Home\Index.cshtml" />
     <None Include="Views\Home\Privacy.cshtml" />
-    <None Include="Views\ZamowieniePlyta\Create.cshtml" />
-    <None Include="Views\ZamowieniePlyta\Delete.cshtml" />
-    <None Include="Views\ZamowieniePlyta\Details.cshtml" />
-    <None Include="Views\ZamowieniePlyta\Edit.cshtml" />
-    <None Include="Views\ZamowieniePlyta\Index.cshtml" />
     <None Include="Views\Zamowienie\AddOrEdit.cshtml" />
     <None Include="Views\Zamowienie\Index.cshtml" />
     <None Include="wwwroot\DataTables\datatables.css" />

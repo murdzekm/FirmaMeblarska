@@ -10,6 +10,7 @@ using FirmaMeblarska.Models;
 using FirmaMeblarska.Utilities;
 using FirmaMeblarska.ViewModels;
 using Microsoft.EntityFrameworkCore.Storage;
+using Microsoft.AspNetCore.Authorization;
 
 namespace FirmaMeblarska.Controllers
 {
@@ -22,6 +23,7 @@ namespace FirmaMeblarska.Controllers
             _context = context;
         }
         //public async Task<IActionResult> Create([Bind("MaszynaId,Nazwa,NrSeryjny,DataPrzegladu")] Maszyna maszyna, string[] selectedConditions)
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Index(int? page)
         {
             var zespol = from d in _context.Maszyna
@@ -39,6 +41,7 @@ namespace FirmaMeblarska.Controllers
 
 
         // GET: Zespol/Create
+        [Authorize(Roles = "Admin")]
         public IActionResult Create()
         {
             var maszyna = new Maszyna();
@@ -86,6 +89,7 @@ namespace FirmaMeblarska.Controllers
         }
 
         // GET: Zespol/Edit/5
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -164,6 +168,7 @@ namespace FirmaMeblarska.Controllers
         }
 
         // GET: Zespol/Delete/5
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -186,10 +191,20 @@ namespace FirmaMeblarska.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var zespol = await _context.Maszyna.FindAsync(id);
+
+            try
+            {
+                var zespol = await _context.Maszyna.FindAsync(id);
             _context.Maszyna.Remove(zespol);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
+            }
+            catch (Exception /* dex */)
+            {
+                ModelState.AddModelError("", "Dane nie zostały usunięte.");
+                TempData["SuccessMessage"] = "Dane nie zostały usunięte, powieważ są powiązane z innym obiektem!";
+                return RedirectToAction(nameof(Index));
+            }
         }
 
         private bool ZespolExists(int id)

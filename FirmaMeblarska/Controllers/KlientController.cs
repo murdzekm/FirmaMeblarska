@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using FirmaMeblarska.Models;
 using FirmaMeblarska.Data;
 using FirmaMeblarska.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 
 namespace FirmaMeblarska.Controllers
 {
@@ -21,6 +22,7 @@ namespace FirmaMeblarska.Controllers
         }
 
         // GET: Klient
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Index()
         {
 
@@ -33,6 +35,7 @@ namespace FirmaMeblarska.Controllers
 
 
         // GET: Klient/Create
+        [Authorize(Roles = "Admin")]
         public IActionResult AddOrEdit(int id = 0)
         {
             loadDDL();
@@ -66,6 +69,7 @@ namespace FirmaMeblarska.Controllers
 
 
         [HttpGet]
+        [Authorize(Roles = "Admin")]
         public ActionResult AddKlientAdres()
         {
             return View();
@@ -118,12 +122,23 @@ namespace FirmaMeblarska.Controllers
 
 
         // GET: Klient/Delete/5
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(int? id)
         {
-            var czesc = await _context.Klient.FindAsync(id);
+            try
+            {
+                var czesc = await _context.Klient.FindAsync(id);
             _context.Klient.Remove(czesc);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
+            }
+            catch (Exception /* dex */)
+            {
+                ModelState.AddModelError("", "Dane nie zostały usunięte.");
+                TempData["SuccessMessage"] = "Dane nie zostały usunięte, powieważ są powiązane z innym obiektem!";
+                return RedirectToAction(nameof(Index));
+            }
+
         }
 
         private void loadDDL()

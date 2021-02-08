@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using FirmaMeblarska.Models;
 using FirmaMeblarska.Data;
+using Microsoft.AspNetCore.Authorization;
 
 namespace FirmaMeblarska.Controllers
 {
@@ -19,6 +20,7 @@ namespace FirmaMeblarska.Controllers
             _context = context;
         }
         // GET: Adres
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Index()
         {
             return View(await _context.Adres.ToListAsync());
@@ -27,6 +29,7 @@ namespace FirmaMeblarska.Controllers
 
 
         // GET: Adres/Create
+        [Authorize(Roles = "Admin")]
         public IActionResult AddOrEdit(int id = 0)
         {
             ViewBag.returnUrl = Request.Headers["Referer"].ToString();
@@ -64,6 +67,7 @@ namespace FirmaMeblarska.Controllers
 
 
         // GET: Adres/Delete/5
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(int? id)
         {
             try { 
@@ -75,7 +79,9 @@ namespace FirmaMeblarska.Controllers
             catch (Exception /* dex */)
             {
                 ModelState.AddModelError("", "Dane nie zostały usunięte.");
+                TempData["SuccessMessage"] = "Dane nie zostały usunięte, powieważ są powiązane z innym obiektem!";
                 return RedirectToAction(nameof(Index));
+               
             }
 
 

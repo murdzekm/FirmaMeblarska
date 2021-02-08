@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using FirmaMeblarska.Data;
 using FirmaMeblarska.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace FirmaMeblarska.Controllers
 {
@@ -20,6 +21,7 @@ namespace FirmaMeblarska.Controllers
         }
 
         // GET: Narzedzie
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Index()
         {
             try
@@ -52,10 +54,11 @@ namespace FirmaMeblarska.Controllers
             //return View(await applicationDbContext.ToListAsync());
         }
 
-       
-        
+
+
 
         // GET: Narzedzie/Create
+        [Authorize(Roles = "Admin")]
         public IActionResult AddOrEdit(int id = 0)
         {
             loadDDL();
@@ -100,6 +103,7 @@ namespace FirmaMeblarska.Controllers
         }
 
         // GET: Narzedzie/Edit/5
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -153,13 +157,23 @@ namespace FirmaMeblarska.Controllers
         }
 
         // GET: Narzedzie/Delete/5
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(int? id)
         {
-            var czesc = await _context.Narzedzie.FindAsync(id);
+            try
+            {
+                var czesc = await _context.Narzedzie.FindAsync(id);
             _context.Narzedzie.Remove(czesc);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
+            catch (Exception /* dex */)
+            {
+                ModelState.AddModelError("", "Dane nie zostały usunięte.");
+                TempData["SuccessMessage"] = "Dane nie zostały usunięte, powieważ są powiązane z innym obiektem!";
+                return RedirectToAction(nameof(Index));
+    }
+}
 
         private bool NarzedzieExists(int id)
         {

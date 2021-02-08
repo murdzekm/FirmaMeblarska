@@ -4,8 +4,14 @@
     ViewData["Title"] = "Zamówienia";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-danger alert-dismissable">
+        <strong>@TempData["SuccessMessage"]</strong>
+    </div>
+}
 <h1>Zamówienia</h1>
+
 
 @if (User.IsInRole("Admin"))
 {
@@ -13,105 +19,105 @@
         <a asp-action="Create" class="btn btn-outline-success"><i class="far fa-plus-square"></i>  Nowe zamówienie</a>
     </p>
 }
-    <!--<table class="table table-hover">-->
-    <div class="card mb-4">
+<!--<table class="table table-hover">-->
+<div class="card mb-4">
 
-        <div class="card-body">
-            <div class="table-responsive">
-                <table class="table table-bordered text-center" id="myTable" width="100%" cellspacing="0">
-                    <thead>
+    <div class="card-body shadow-lg">
+        <div class="table-responsive ">
+            <table class="table table-bordered text-center" id="myTable" width="100%" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>
+                            @Html.DisplayNameFor(model => model.NrFaktura)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.DataZlozenia)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Klient)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Adres)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.ZespolId)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Status)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Cena)
+                        </th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
                         <tr>
-                            <th>
-                                @Html.DisplayNameFor(model => model.NrFaktura)
-                            </th>
-                            <th>
-                                @Html.DisplayNameFor(model => model.DataZlozenia)
-                            </th>
-                            <th>
-                                @Html.DisplayNameFor(model => model.Klient)
-                            </th>
-                            <th>
-                                @Html.DisplayNameFor(model => model.Adres)
-                            </th>
-                            <th>
-                                @Html.DisplayNameFor(model => model.Zespol)
-                            </th>
-                            <th>
-                                @Html.DisplayNameFor(model => model.Status)
-                            </th>
-                            <th>
-                                @Html.DisplayNameFor(model => model.Cena)
-                            </th>
-                            <th></th>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.NrFaktura)
+                            </td>
+
+                            <td>
+                                @Html.DisplayFor(modelItem => item.DataZlozenia)
+                            </td>
+
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Klient.FullName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Adres.FullAdres)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Zespol.Nazwa)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Status.Nazwa)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Cena) zł
+                            </td>
+                            <td>
+
+                                @if (User.IsInRole("Admin"))
+                                {
+                                    <a asp-action="Edit" asp-route-id="@item.ZamowienieId"><i class="fa fa-marker fa-lg"></i></a>
+                                    <a asp-action="Delete" asp-route-id="@item.ZamowienieId" class="text-danger ml-1" onclick="return confirm('Czt na pewno chcesz usunąć tą część?')"><i class="fa fa-trash-alt fa-lg"></i></a>
+                                }
+                                <a asp-action="Details" asp-route-id="@item.ZamowienieId"><i class="fa fa-list"></i></a>
+
+                            </td>
                         </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var item in Model)
-                        {
-                            <tr>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.NrFaktura)
-                                </td>
-
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.DataZlozenia)
-                                </td>
-
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.Klient.FullName)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.Adres.FullAdres)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.Zespol.Nazwa)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.Status.Nazwa)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.Cena) zł
-                                </td>
-                                <td>
-
-                                    @if (User.IsInRole("Admin"))
-                                    {
-                                        <a asp-action="Edit" asp-route-id="@item.ZamowienieId"><i class="fa fa-marker fa-lg"></i></a>
-                                        <a asp-action="Delete" asp-route-id="@item.ZamowienieId" class="text-danger ml-1" onclick="return confirm('Czt na pewno chcesz usunąć tą część?')"><i class="fa fa-trash-alt fa-lg"></i></a>
-                                    }
-                                        <a asp-action="Details" asp-route-id="@item.ZamowienieId"><i class="fa fa-list"></i></a>
-
-                                    </td>
-                            </tr>
-                        }
-                    </tbody>
-                </table>
-            </div>
+                    }
+                </tbody>
+            </table>
         </div>
     </div>
+</div>
 
-    @section Scripts {
-        <script type="text/javascript">
-            $(document).ready(function () {
-                $('#myTable').DataTable({
-                    "order": [[0, "desc"], [1, "asc"]],
-                    "language": {
-                        "processing": "Przetwarzanie...",
-                        "search": "Szukaj:  ",
-                        "lengthMenu": "Pokaż _MENU_ pozycji",
-                        "info": "Pozycje od _START_ do _END_ z _TOTAL_",
-                        "infoEmpty": "Pozycji 0 z 0 dostępnych",
-                        "infoFiltered": "(filtrowanie spośród _MAX_ dostępnych pozycji)",
-                        "loadingRecords": "Wczytywanie...",
-                        "zeroRecords": "Nie znaleziono ",
-                        "paginate": {
-                            "first": "Pierwsza",
-                            "previous": "Poprzednia",
-                            "next": "Następna",
-                            "last": "Ostatnia"
-                        },
-                    }
-                });
+@section Scripts {
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#myTable').DataTable({
+                "order": [[0, "desc"], [1, "asc"]],
+                "language": {
+                    "processing": "Przetwarzanie...",
+                    "search": "Szukaj:  ",
+                    "lengthMenu": "Pokaż _MENU_ pozycji",
+                    "info": "Pozycje od _START_ do _END_ z _TOTAL_",
+                    "infoEmpty": "Pozycji 0 z 0 dostępnych",
+                    "infoFiltered": "(filtrowanie spośród _MAX_ dostępnych pozycji)",
+                    "loadingRecords": "Wczytywanie...",
+                    "zeroRecords": "Nie znaleziono ",
+                    "paginate": {
+                        "first": "Pierwsza",
+                        "previous": "Poprzednia",
+                        "next": "Następna",
+                        "last": "Ostatnia"
+                    },
+                }
             });
-        </script>
-    }
+        });
+    </script>
+}
