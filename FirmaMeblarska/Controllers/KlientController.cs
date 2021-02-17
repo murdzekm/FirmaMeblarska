@@ -90,10 +90,10 @@ namespace FirmaMeblarska.Controllers
                 var adress = _context.Adres.Where(m => m.Miejscowosc == obj.Miejscowosc && m.Ulica == obj.Ulica && m.NrDomu == obj.NrDomu && m.NrLokalu == obj.NrLokalu).FirstOrDefault();
 
                 if (adress == null)
-                {
-                    lastestAdrId = a.AdresId;
+                {                   
                     _context.Adres.Add(a);
                     _context.SaveChanges();
+                    lastestAdrId = a.AdresId;
                 }
                 else
                 {
